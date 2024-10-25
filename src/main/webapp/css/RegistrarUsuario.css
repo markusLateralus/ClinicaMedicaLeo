@@ -1,0 +1,68 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f4f8;
+    color: #333;
+}
+
+.form-container {
+    width: 50%;
+    margin: 5% auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    color: #4CAF50;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+input, select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Estilos para cuando un campo es inválido */
+input.invalid, select.invalid {
+    background-color: #f8d7da;  /* Fondo rojo claro */
+    border-color: #dc3545;      /* Borde rojo */
+}
+
+span.error {
+    color: #dc3545;  /* Texto del span en rojo */
+    font-size: 0.9em;
+    display: block;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+/* Estilos para cuando el campo es válido (desaparece el error) */
+input.valid, select.valid {
+    background-color: #ffffff;  /* Fondo blanco normal */
+    border-color: #ccc;         /* Borde normal */
+}
+
+input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+.not-editable {
+  display: none;
+}

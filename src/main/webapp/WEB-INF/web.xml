@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://jakarta.ee/xml/ns/jakartaee" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd" id="WebApp_ID" version="5.0">
+  <display-name>ClinicaMedica</display-name>
+  <welcome-file-list>
+     <welcome-file>paciente.jsp</welcome-file>
+          <welcome-file>EditarPaciente.jsp</welcome-file>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+  </welcome-file-list>
+
+ 
+   <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>servlets.LoginServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/LoginServlet/*</url-pattern>  
+    </servlet-mapping>
+<!--  
+    <servlet>
+        <servlet-name>AdministradorServlet</servlet-name>
+        <servlet-class>servlets.AdministradorServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>AdministradorServlet</servlet-name>
+        <url-pattern>/AdministradorServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>PacienteServlet</servlet-name>
+        <servlet-class>servlets.PacienteServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>PacienteServlet</servlet-name>
+        <url-pattern>/PacienteServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>MedicoServlet</servlet-name>
+        <servlet-class>servlets.MedicoServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>MedicoServlet</servlet-name>
+        <url-pattern>/MedicoServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ConsultarCitaServlet</servlet-name>
+        <servlet-class>servlets.ConsultarCitaServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ConsultarCitaServlet</servlet-name>
+        <url-pattern>/ConsultarCitaServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RealizarReservaServlet</servlet-name>
+        <servlet-class>servlets.RealizarReservaServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>RealizarReservaServlet</servlet-name>
+        <url-pattern>/RealizarReservaServlet</url-pattern>
+    </servlet-mapping>
+    -->
+ 
+</web-app>
