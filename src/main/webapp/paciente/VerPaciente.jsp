@@ -8,79 +8,124 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Ver datos Paciente</title>
+<link rel="stylesheet" type="text/css" href="./css/VerPaciente.css">
+
 </head>
 <body>
   
 <% 
-// Obtener la acción del parámetro
-String action = request.getParameter("action");
-
-// Inicializar variables para el paciente
-int id=0;
-String username="";
-String password="";
-String dni="";
-String nombre = "";
-String apellido1 = "";
-String apellido2 = "";
-String email="";
-String telefono="";
-Date fechaNacimiento=null;
-
-// Si la acción es "edit", recuperar los datos del paciente del request (los debes haber pasado desde el servlet)
-if ("verPaciente".equals(action)) {
+String tipoUsuario = (String) session.getAttribute("tipoUsuario");
     Paciente paciente = (Paciente) request.getAttribute("paciente");
-    if (paciente != null) {
-		id=paciente.getId();
-		username=paciente.getUsername();
-		password=paciente.getPassword();
-		dni=paciente.getDni();
-        nombre = paciente.getNombre();
-        apellido1 = paciente.getApellido1();
-        apellido2 = paciente.getApellido2();
-        email=paciente.getEmail();
-        telefono=paciente.getTelefono();
-        fechaNacimiento=paciente.getFechaNacimiento();
-    }
-}
-
 %>
- <h1>HOLA <%=nombre %></h1>
-<form id="formularioInsertarPaciente" action="PacienteServlet" method="post">
-        <!-- Campo oculto para definir la acción en el Servlet -->
-        <input type="hidden" name="action" value="update">
-               <input type="hidden" name="id"value="<%= id %>" />
-        <label for="username">Nombre de usuario:</label>
-        <input type="text" id="username" name="username" value="<%= username %>" readonly><br>
 
-        <label for="password">Contraseña:</label>
-        <input type="password" id="password" name="password" value="<%= password %>" readonly><br>
+  
+</head>
+<body>
 
-        <label for="dni">DNI:</label>
-        <input type="text" id="dni" name="dni" value="<%= dni %>"  readonly><br>
+<header>
+<div class="divLogo">
+<a href="PacienteServlet?action=irIndexPaciente&id=<%=paciente.getId()%>">
+    <img src="imagenes/ClinicaLeo2.png" alt="Logo de Clínica LEO" class="logo">
+    </a>
+</div>
+    <div class="divH1">
+        <h1>Clínica LEO</h1>
+    </div>
+</header>
 
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" value="<%= nombre %>" readonly><br>
+<nav>
+    <ul class="menu">
+        <li><a href="ConsultarCitaServlet?action=irSolicitarCita&id=<%=paciente.getId()  %>">Consultar especialistas</a></li>
+             
+                <li><a href="RealizarReservaServlet?action=mostrarNotificaciones&idPaciente=<%=paciente.getId()  %>" >Consultar notificaciones</a></li>
+        <!-- Submenú de Datos personales -->
+ 
+        <li>
+            <a href="#">Datos Personales</a>
+            <ul class="submenu">
+                  <li><a href="PacienteServlet?action=verPaciente&id=<%= paciente.getId() %>">Consultarlos</a></li>
+                <li><a href="PacienteServlet?action=irEditarPaciente&id=<%= paciente.getId() %>">Editarlos</a></li>
+            </ul>
+        </li>
+        <li><a href="LogoutServlet">Cerrar Sesión</a></li>
+    </ul>
+            <div class="divTipoUsuario">
+  	  <h4><%= paciente.getNombre() %></h4>
+         <h4><%= "Tipo Usuario: " + tipoUsuario %></h4>
+      </div>
+</nav>
+<br><br>
 
-        <label for="apellido1">Primer Apellido:</label>
-        <input type="text" id="apellido1" name="apellido1"  value="<%= apellido1 %>" readonly><br>
+<main>
+    <div class="form-container">
+        <form class="formularioInsertarPaciente">
+            <fieldset>
+                <legend>DATOS USUARIO</legend>
+                <label for="username">Nombre de usuario:</label>
+                <input type="text" id="username" name="username" value="<%= paciente.getUsername() %>" readonly class="readonly-field">
+                
+                <label for="password">Contraseña:</label>
+                <input type="text" id="password" name="password" value="<%= paciente.getPassword() %>" readonly class="readonly-field">
+            </fieldset>
+        </form>
+    </div>
+    
+    <div class="form-separator"></div>
 
-        <label for="apellido2">Segundo Apellido:</label>
-        <input type="text" id="apellido2" name="apellido2"   value="<%= apellido2 %>" readonly><br>
+    <div class="form-container">
+        <form class="formularioInsertarPaciente">
+            <fieldset>
+                <legend>DATOS DEL PACIENTE</legend>
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" value="<%= paciente.getNombre() %>" readonly class="readonly-field">
+                
+                <label for="apellido1">Primer Apellido:</label>
+                <input type="text" id="apellido1" name="apellido1" value="<%= paciente.getApellido1() %>" readonly class="readonly-field">
+                
+                <label for="apellido2">Segundo Apellido:</label>
+                <input type="text" id="apellido2" name="apellido2" value="<%= paciente.getApellido2() %>" readonly class="readonly-field">
+                
+                <label for="dni">DNI:</label>
+                <input type="text" id="dni" name="dni" value="<%= paciente.getDni() %>" readonly class="readonly-field">
+                
+                <label for="email">Correo Electrónico:</label>
+                <input type="email" id="email" name="email" value="<%= paciente.getEmail() %>" readonly class="readonly-field">
+                
+                <label for="telefono">Teléfono:</label>
+                <input type="tel" id="telefono" name="telefono" value="<%= paciente.getTelefono() %>" readonly class="readonly-field">
+                
+                <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+                <input type="date" id="fechaNacimiento" name="fechaNacimiento" value="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(paciente.getFechaNacimiento()) %>" readonly class="readonly-field">
+            </fieldset>
+        </form>
+    </div>
 
-        <label for="email">Correo Electrónico:</label>
-        <input type="email" id="email" name="email"  value="<%= email %>"  readonly><br>
+    <div class="divRegresar">
+        <a href="ConsultarCitaServlet?action=irSolicitarCita&id=<%= paciente.getId() %>">Regresar</a>
+    </div>
+</main>
 
-        <label for="telefono">Teléfono:</label>
-        <input type="tel" id="telefono" name="telefono" value="<%= telefono %>"  readonly><br>
+	<footer class="footer">
+		<div class="footer-container">
+			<div class="footer-left">
+				<a href="#contacto">Contacto</a> <a href="#aviso-legal">Aviso
+					Legal</a> <a href="#politicas-privacidad">Políticas de Privacidad</a>
+			</div>
+			<div class="footer-right">
+				<a href="https://www.facebook.com" target="_blank"><img
+					src="imagenes/facebook.png" alt="Facebook"></a> <a
+					href="https://www.instagram.com" target="_blank"><img
+					src="imagenes/instagram.png" alt="Instagram"></a> <a
+					href="https://www.youtube.com" target="_blank"><img
+					src="imagenes/youtube.png" alt="YouTube"></a>
+			</div>
+		</div>
 
-        <label for="fechaNacimiento">Fecha de Nacimiento:</label>
-        <input type="date" id="fechaNacimiento" name="fechaNacimiento" value="<%=fechaNacimiento %>"  readonly><br>
-   
- <a href="PacienteServlet?action=listarPacientes">regresar</a>
+		<p class="footer-author">Autor: Marcos Antonio Arrornes Alcañiz
+			&copy; 2024</p>
 
+	</footer>
 
 </body>
-
 </html>

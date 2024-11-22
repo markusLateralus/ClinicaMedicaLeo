@@ -7,7 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Registrar paciente</title>
-  <link rel="stylesheet" type="text/css" href="./css/InsertarPaciente.css"> 
+
+    <link rel="stylesheet" type="text/css" href="./css/InsertarPaciente.css"> 
 
  
 </head>
@@ -21,9 +22,7 @@
 </div>
 </header>
 
-<nav>
 
-</nav>
 <br><br><br><br><br>
 <main>
     <h2>Registrar nuevo Paciente</h2>
@@ -103,30 +102,27 @@ if ("irCrearPaciente".equals(action) || action==null) {
 <%} %>
 
 
-<footer>
-<div class="divisionOpciones">
-<div class="opciones">
-<ul>
-<li><a href="">Contacto</a>
-</ul>
+
+
+<footer class="footer">
+    <div class="footer-container">
+<div class="footer-left">
+            <a href="#contacto">Contacto</a>
+            <a href="#aviso-legal">Aviso Legal</a>       
+<a href="#politicas-privacidad">Políticas de Privacidad</a>  
 </div>
-<div class="opciones">
-<ul>
-<li><a href="">Aviso Legal</a>
-</ul>
-</div>
-<div class="opciones">
-<ul>
-<li><a href="">Política de Privacidad</a>
-</ul>
-</div>
-</div>
-    <div class="social-icons">
-        <a href="https://www.facebook.com" target="_blank"><img src="imagenes/facebook.png" alt="Facebook"></a>
+        <div class="footer-right">
+   <a href="https://www.facebook.com" target="_blank"><img src="imagenes/facebook.png" alt="Facebook"></a>
         <a href="https://www.instagram.com" target="_blank"><img src="imagenes/instagram.png" alt="Instagram"></a>
-        <a href="https://www.youtube.com" target="_blank"><img src="imagenes/youtubee.png" alt="YouTube"></a>
+        <a href="https://www.youtube.com" target="_blank"><img src="imagenes/youtube.png" alt="YouTube"></a>
+</div>
     </div>
+
+    <p class="footer-author">Autor: Marcos Antonio Arrornes Alcañiz &copy; 2024</p>
+
 </footer>
+
+
 </body>
    <script src="./paciente/ValidacionFormularioInsertarPaciente.js"></script>
 </html>

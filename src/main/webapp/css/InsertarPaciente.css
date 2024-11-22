@@ -31,6 +31,14 @@ header img {
 	margin-top:-90px;
 	
 }
+        main {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
 h1 {
 	font-size:60px;
@@ -121,6 +129,7 @@ a img:hover {
   background-color: rgb(0, 206, 206);
 }
 input[type="submit"] {
+	
     padding: 10px 15px;
     background-color: #57b75c;
     color: white;
@@ -128,12 +137,11 @@ input[type="submit"] {
     border-radius: 5px;
     cursor: pointer;
 }
-
 input[type="submit"]:hover {
     background-color: rgb(65, 150, 69);
 }
-
 input[type="reset"] {
+
     padding: 10px 15px;
     background-color:#b36464;
     color: white;
@@ -179,36 +187,160 @@ a{
 
 
  .camposConError{
-    background-color: red;
+    background-color: #f73e09;
   }
   
   /* Footer styles */
 footer {
-    background-color: #007bbf; /* Footer background */
+	background-color: #007bbf; /* Footer background */
+	color: white;
+	padding: 20px 0;
+	text-align: center;
+	width: 100%;
+	bottom: 0;
+	position: relative;
+}
+
+.footer-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+.footer-left {
+	margin-left: -140px;
+	display: flex;
+	gap: 15px; /* Espacio entre enlaces o íconos */
+}
+
+.footer-right {
+	display: flex;
+	gap: 15px; /* Espacio entre enlaces o íconos */
+}
+
+.footer-left a, .footer-right a {
+	color: #fff;
+	text-decoration: none;
+	font-size: 16px;
+}
+
+.footer-left a:hover {
+	text-decoration: underline;
+}
+
+.footer-right img {
+	width: 30px;
+	height: 30px;
+}
+
+.footer-right a:hover img {
+	filter: brightness(0.8);
+}
+
+input[type="reset"] {
+    padding: 10px 15px;
+    background-color:#b36464;
     color: white;
-    padding: 1rem;
-    text-align: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="reset"]:hover {
+    background-color:  #804040;
+}
+
+
+/* Responsive design */
+@media screen and (max-width: 768px) {
+    nav ul {
+        display: block;
+        text-align: left;
+    }
+    
+    nav ul li {
+        display: block;
+        margin: 10px 0;
+    }
+
+    table {
+        width: 100%;
+    }
+}
+
+/* Menu styles */
+.menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: #007bbf; /* Main menu background */
+}
+
+.menu li {
+    display: inline-block;
     position: relative;
-    width: 100%;
-    bottom: 0;
 }
 
-footer .social-icons {
-	
-    margin-top: 1rem;
-    text-align: rigth;
+.menu li a {
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
 }
 
-
-footer .social-icons a:hover {
-    color: #e6f2f8; /* Lighter hover effect */
+.menu li a:hover {
+    background-color: #005f8c; /* Darker blue on hover */
 }
-  
-  .divisionOpciones{
-  text-align:  left;
-  column-count: 6;
-  column-gap: 20px;  /*separacion entre columna */
-  column-width: 50px; /*ancho de cada columna*/
-  }
+
+/* Submenu styles */
+.submenu {
+    display: none; /* Hide submenu by default */
+    position: absolute;
+    list-style-type: none;
+    background-color: #007bbf; /* Lighter blue for submenu #005f8c*/
+    padding: 0;
+    margin: 0;
+    top: 100%; /* Display below the main menu */
+    left: 0;
+    width: 200px;
+    z-index: 9999;
+}
+
+.submenu li {
+    display: block;
+}
+
+.submenu li a {
+    padding: 12px;
+    color: white;
+    text-align: left;
+    text-decoration: none;
+}
+
+.submenu li a:hover {
+    background-color: 005f8c; /* Darker blue on hover */
+}
+
+/* Show submenu on hover */
+.menu li:hover .submenu {
+    display: block;
+}
+
+/* Responsive submenu behavior */
+@media screen and (max-width: 768px) {
+    .menu li {
+        display: block;
+        width: 100%;
+    }
+
+    .submenu {
+        position: static;
+    }
+}
+
   
   

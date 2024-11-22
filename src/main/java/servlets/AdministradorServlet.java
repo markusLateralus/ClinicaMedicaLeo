@@ -93,8 +93,8 @@ public class AdministradorServlet extends HttpServlet {
     }
     
     private void irIndexAdministrador(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("id medico " + request.getParameter("id"));
-    	int medicoId = Integer.parseInt(request.getParameter("id"));
+//        System.out.println("id Admin " + request.getParameter("id"));
+    	int idAdministrador = Integer.parseInt(request.getParameter("id"));
         
 //        MedicoDAO medicoDAO=null;
         AdministradorDAO administradorDAO=null;
@@ -102,7 +102,7 @@ public class AdministradorServlet extends HttpServlet {
 		try {
 			medicoDAO = new MedicoDAO();
 			administradorDAO=new AdministradorDAO();
-			 administrador=administradorDAO.getAdministradorById(medicoId);
+			 administrador=administradorDAO.getAdministradorById(idAdministrador);
 //			  for(Horario h:horarios) {
 //				  System.out.println("horarios" + h.getDia() + ", " + h.getHora() + ", " + h.getEstado() + ", id " + h.g);
 //			  }
@@ -121,26 +121,50 @@ public class AdministradorServlet extends HttpServlet {
 	}
     
     private void listarPacientes(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
+     	int idAdministrador = Integer.parseInt(request.getParameter("id"));
+        AdministradorDAO administradorDAO=null;
+     	Administrador administrador=null;
+    
+    	try {
             List<Paciente> listaPacientes = pacienteDAO.getAllPacientes();
+        	administradorDAO=new AdministradorDAO();
+        	administrador=administradorDAO.getAdministradorById(idAdministrador);
             request.setAttribute("listaPacientes", listaPacientes);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("./paciente/ListarPacientes.jsp");
+            request.setAttribute("administrador", administrador);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("./administrador/ListarPacientes.jsp");
          
             dispatcher.forward(request, response);
         } catch (SQLException e) {
             throw new ServletException(e);
-        }
+        } catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
+   
     private void listarMedicos(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
+//    	 System.out.println("Listar medicos id  " + request.getParameter("idAdmininstrador"));
+    	int idAdministrador = Integer.parseInt(request.getParameter("id"));
+        AdministradorDAO administradorDAO=null;
+     	Administrador administrador=null;
+    	
+    	try {
             List<Medico> listaMedicos = medicoDAO.getAllMedicos(); // Obtener todos los médicos
+         	administradorDAO=new AdministradorDAO();
+        	administrador=administradorDAO.getAdministradorById(idAdministrador);
+     
+            request.setAttribute("administrador", administrador);
             request.setAttribute("listaMedicos", listaMedicos);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("./medico/ListarMedicos.jsp"); // Redirige a la lista de médicos
+            
+            RequestDispatcher dispatcher = request.getRequestDispatcher("./administrador/ListarMedicos.jsp"); // Redirige a la lista de médicos
             dispatcher.forward(request, response);
         } catch (SQLException e) {
             throw new ServletException(e);
-        }
+        } catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     private void listarAdministradores(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
@@ -154,14 +178,39 @@ public class AdministradorServlet extends HttpServlet {
     }
     
     private void irCrearPaciente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-   	 request.getRequestDispatcher("./paciente/InsertarPaciente.jsp").forward(request, response);
+    	int idAdministrador = Integer.parseInt(request.getParameter("id"));
+//      System.out.println("id Admin IR CREAR MEDICO " + idAdministrador);
+   
+   	Administrador administrador=null;
+  	try {
+  		administradorDAO=new AdministradorDAO();
+			administrador=administradorDAO.getAdministradorById(idAdministrador);
+		} catch (SQLException | NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+  	  request.setAttribute("administrador",administrador);
+    	 request.getRequestDispatcher("./administrador/InsertarPacienteA.jsp").forward(request, response);
 		
 	}
     private void irCrearMedico(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-      	 request.getRequestDispatcher("./medico/InsertarMedico.jsp").forward(request, response);
+    	int idAdministrador = Integer.parseInt(request.getParameter("id"));
+//        System.out.println("id Admin IR CREAR MEDICO " + idAdministrador);
+     
+     	Administrador administrador=null;
+    	try {
+    		administradorDAO=new AdministradorDAO();
+			administrador=administradorDAO.getAdministradorById(idAdministrador);
+		} catch (SQLException | NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	  request.setAttribute("administrador",administrador);
+      	 request.getRequestDispatcher("./administrador/InsertarMedicoA.jsp").forward(request, response);
    		
    	}
     private void irCrearAdministrador(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	
       	 request.getRequestDispatcher("./administrador/InsertarAdministrador.jsp").forward(request, response);
    		
    	}
@@ -169,34 +218,54 @@ public class AdministradorServlet extends HttpServlet {
     
     
     private void verPaciente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	 int id = Integer.parseInt(request.getParameter("id"));
-    	Paciente paciente=null;
+    	 int idPaciente = Integer.parseInt(request.getParameter("idPaciente"));
+         int idAdministrador = Integer.parseInt(request.getParameter("idAdministrador"));
+
+    	 Paciente paciente=null;
 		try {
-			paciente = pacienteDAO.getPacienteById(id);
+			paciente = pacienteDAO.getPacienteById(idPaciente);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		 Administrador administrador=null;
+	        try {
+				administrador=administradorDAO.getAdministradorById(idAdministrador);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         request.setAttribute("paciente", paciente);
-    	request.getRequestDispatcher("./paciente/VerPaciente.jsp").forward(request, response);
+        request.setAttribute("administrador", administrador);
+    	request.getRequestDispatcher("./administrador/VerPacienteA.jsp").forward(request, response);
 		
 	}
     private void verMedico(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-   	 int id = Integer.parseInt(request.getParameter("id"));
+    	 int idAdministrador = Integer.parseInt(request.getParameter("idAdministrador"));
+    	int idMedico = Integer.parseInt(request.getParameter("idMedico"));
    	Medico medico=null;
 		try {
-			medico = medicoDAO.getMedicoById(id);
+			medico = medicoDAO.getMedicoById(idMedico);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		 Administrador administrador=null;
+	        try {
+				administrador=administradorDAO.getAdministradorById(idAdministrador);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
        request.setAttribute("medico", medico);
-   	request.getRequestDispatcher("./medico/VerMedico.jsp").forward(request, response);
+       request.setAttribute("administrador", administrador);
+   	request.getRequestDispatcher("./administrador/VerMedicoA.jsp").forward(request, response);
 		
 	}
     private void verAdministrador(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
    
-    	int id = Integer.parseInt(request.getParameter("id"));
+    	int id = Integer.parseInt(request.getParameter("idAdministrador"));
    	Administrador administrador=null;
 		try {
 			administrador = administradorDAO.getAdministradorById(id);
@@ -213,29 +282,57 @@ public class AdministradorServlet extends HttpServlet {
     
   
     private void irEditarPaciente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+        int idAdministrador = Integer.parseInt(request.getParameter("idAdministrador"));
+        int idPaciente = Integer.parseInt(request.getParameter("idPaciente"));
+        Paciente paciente =null;
         try {
-            Paciente paciente = pacienteDAO.getPacienteById(id);
-            request.setAttribute("paciente", paciente);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("./paciente/EditarPaciente.jsp");
-            dispatcher.forward(request, response);
+             paciente = pacienteDAO.getPacienteById(idPaciente);
+          
+        
         } catch (SQLException e) {
             throw new ServletException(e);
         }
+        
+        Administrador administrador=null;
+        try {
+			administrador=administradorDAO.getAdministradorById(idAdministrador);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        request.setAttribute("paciente", paciente);
+        request.setAttribute("administrador", administrador);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("./administrador/EditarPacienteA.jsp");
+        dispatcher.forward(request, response);
     }
     private void irEditarMedico(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+        int idAdministrador = Integer.parseInt(request.getParameter("idAdministrador"));
+        int idMedico = Integer.parseInt(request.getParameter("idMedico"));
+        Medico medico =null;
         try {
-            Medico medico = medicoDAO.getMedicoById(id);
-            request.setAttribute("medico", medico);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("./medico/EditarMedico.jsp");
-            dispatcher.forward(request, response);
+             medico = medicoDAO.getMedicoById(idMedico);
+          
+        
         } catch (SQLException e) {
             throw new ServletException(e);
         }
+        
+        Administrador administrador=null;
+        try {
+			administrador=administradorDAO.getAdministradorById(idAdministrador);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        request.setAttribute("medico", medico);
+        request.setAttribute("administrador", administrador);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("./administrador/EditarMedicoA.jsp");
+        dispatcher.forward(request, response);
     }
     private void irEditarAdministrador(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+        int id = Integer.parseInt(request.getParameter("idAdministrador"));
         try {
             Administrador administrador = administradorDAO.getAdministradorById(id);
             request.setAttribute("administrador", administrador);
@@ -248,23 +345,54 @@ public class AdministradorServlet extends HttpServlet {
     
     
     private void eliminarPaciente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+        System.out.println("DENTRO ELIMINAR Paciente");
+    	int idPaciente = Integer.parseInt(request.getParameter("idPaciente"));
+        int idAdministrador = Integer.parseInt(request.getParameter("idAdministrador"));
+        Administrador administrador=null;
+       Paciente pacienteEliminado=null;
         try {
-            pacienteDAO.eliminarPaciente(id);
-            response.sendRedirect("PacienteServlet?action=list");
-        } catch (SQLException e) {
-            throw new ServletException(e);
-        }
+        	pacienteEliminado=pacienteDAO.getPacienteById(idPaciente);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        try {
+        	administradorDAO.asignarPermisosPaciente(idAdministrador, idPaciente);
+			administradorDAO.eliminarPaciente(idAdministrador, pacienteEliminado);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+            response.sendRedirect("AdministradorServlet?action=listarPacientes&id="+idAdministrador);
     }
     
     private void eliminarMedico(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+        System.out.println("DENTRO ELIMINAR MEDICO");
+    	int idMedico = Integer.parseInt(request.getParameter("idMedico"));
+        int idAdministrador = Integer.parseInt(request.getParameter("idAdministrador"));
+        Administrador administrador=null;
+        Medico medicoEliminado=null;
         try {
-           medicoDAO.eliminarMedico(id);
-            response.sendRedirect("MedicoServlet?action=listarMedicos");
-        } catch (SQLException e) {
-            throw new ServletException(e);
-        }
+			medicoEliminado=medicoDAO.getMedicoById(idMedico);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        try {
+        	administradorDAO.asignarPermisosMedico(idAdministrador, idMedico);
+			administradorDAO.eliminarMedico(idAdministrador, medicoEliminado);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+            response.sendRedirect("AdministradorServlet?action=listarMedicos&id="+idAdministrador);
+        
     }
     
     private void eliminarAdministrador(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -285,17 +413,25 @@ public class AdministradorServlet extends HttpServlet {
         if ("crearPaciente".equals(action)) {
         	crearPaciente(request, response);
         } 
-        else if ("crearMedico".equals(action)) {
-        	crearMedico(request, response);
+        else if ("crearMedicoA".equals(action)) {
+        	crearMedicoA(request, response);
+        }
+        else if ("crearPacienteA".equals(action)) {
+        	crearPacienteA(request, response);
         }
         else if ("crearAdministrador".equals(action)) {
         	crearAdministrador(request, response);
         }
-        else if ("actualizarPaciente".equals(action)) {
-       
-            actualizarPaciente(request, response);
-        }
+  
         else if ("actualizarMedico".equals(action)) {
+            
+            actualizarMedico(request, response);
+        }
+        else if ("actualizarPacienteA".equals(action)) {
+            
+            actualizarPacienteA(request, response);
+        }
+        else if ("actualizarMedicoA".equals(action)) {
             
             actualizarMedico(request, response);
         }
@@ -308,6 +444,7 @@ public class AdministradorServlet extends HttpServlet {
     
 
     private void crearPaciente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    
         Paciente nuevoPaciente = new Paciente();
         nuevoPaciente.setUsername(request.getParameter("username"));
         nuevoPaciente.setPassword(request.getParameter("password"));
@@ -327,7 +464,17 @@ public class AdministradorServlet extends HttpServlet {
         }
     }
 
-    private void crearMedico(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void crearMedicoA(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	
+    	
+    	int idAdministrador = Integer.parseInt(request.getParameter("idAdministrador"));
+      	Administrador administrador=null;
+      	 try {
+			administrador=administradorDAO.getAdministradorById(idAdministrador);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         Medico medicoNuevo = new Medico();
         medicoNuevo.setUsername(request.getParameter("username"));
         medicoNuevo.setPassword(request.getParameter("password"));
@@ -340,15 +487,83 @@ public class AdministradorServlet extends HttpServlet {
         medicoNuevo.setEspecialidad(request.getParameter("especialidad"));
         medicoNuevo.setFechaNacimiento(Date.valueOf(request.getParameter("fechaNacimiento")));
 
+        Medico medicoAsociado=null;
+     int idMedico;
         try {
-           medicoDAO.insertarMedico(medicoNuevo);
-            response.sendRedirect("MedicoServlet?action=listarMedicos");
+           idMedico=administradorDAO.insertarMedico(medicoNuevo);
+ 
         } catch (SQLException e) {
             throw new ServletException(e);
         }
+        
+        try {
+			medicoAsociado=medicoDAO.getMedicoById(idMedico);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        System.out.println("MEDICO ASOCIADO id " + medicoAsociado.getId() + " nombre " + medicoAsociado.getNombre() );
+        try {
+			administradorDAO.asignarPermisosMedico(administrador.getId(), medicoAsociado.getId());
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+         request.setAttribute("administrador", administrador);
+         response.sendRedirect("AdministradorServlet?action=listarMedicos&id="+administrador.getId());
     }
 
-    
+    private void crearPacienteA(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	
+    	
+    	int idAdministrador = Integer.parseInt(request.getParameter("idAdministrador"));
+      	Administrador administrador=null;
+      	 try {
+			administrador=administradorDAO.getAdministradorById(idAdministrador);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        Paciente pacienteNuevo = new Paciente();
+        pacienteNuevo.setUsername(request.getParameter("username"));
+        pacienteNuevo.setPassword(request.getParameter("password"));
+        pacienteNuevo.setDni(request.getParameter("dni"));
+        pacienteNuevo.setNombre(request.getParameter("nombre"));
+        pacienteNuevo.setApellido1(request.getParameter("apellido1"));
+        pacienteNuevo.setApellido2(request.getParameter("apellido2"));
+        pacienteNuevo.setEmail(request.getParameter("email"));
+        pacienteNuevo.setTelefono(request.getParameter("telefono"));
+        pacienteNuevo.setFechaNacimiento(Date.valueOf(request.getParameter("fechaNacimiento")));
+
+        Paciente pacienteAsociado=null;
+     int idPaciente;
+        try {
+           idPaciente=administradorDAO.insertarPaciente(pacienteNuevo);
+ 
+        } catch (SQLException e) {
+            throw new ServletException(e);
+        }
+        
+        try {
+			pacienteAsociado=pacienteDAO.getPacienteById(idPaciente);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        System.out.println("Paciente ASOCIADO id " + pacienteAsociado.getId() + " nombre " + pacienteAsociado.getNombre() );
+        try {
+			administradorDAO.asignarPermisosPaciente(administrador.getId(), pacienteAsociado.getId());
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+         request.setAttribute("administrador", administrador);
+         response.sendRedirect("AdministradorServlet?action=listarPacientes&id="+administrador.getId());
+    }
     private void crearAdministrador(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	Administrador administradorNuevo = new Administrador();
         administradorNuevo.setUsername(request.getParameter("username"));
@@ -374,8 +589,9 @@ public class AdministradorServlet extends HttpServlet {
     
     
     
-    private void actualizarPaciente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	int id = Integer.parseInt(request.getParameter("id"));
+    private void actualizarPacienteA(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	int idAdministrador = Integer.parseInt(request.getParameter("idAdministrador"));
+    	int idPaciente = Integer.parseInt(request.getParameter("idPaciente"));
         String username = request.getParameter("username");
         String password = request.getParameter("password");
  
@@ -388,10 +604,18 @@ public class AdministradorServlet extends HttpServlet {
         java.util.Date fechaNacimiento = null;
 			fechaNacimiento =  Date.valueOf(request.getParameter("fechaNacimiento"));
        
-        	Paciente pacienteActualizado;
+			Administrador administrador=null;
 			try {
-				pacienteActualizado = pacienteDAO.getPacienteById(id);
-				pacienteActualizado.setId(id);
+				administrador=administradorDAO.getAdministradorById(idAdministrador);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		 	Paciente pacienteActualizado=null;
+			try {
+//				administrador=administradorDAO.getAdministradorById(idAdministrador);
+				pacienteActualizado = pacienteDAO.getPacienteById(idPaciente);
+				pacienteActualizado.setId(idPaciente);
 				pacienteActualizado.setUsername(username);
 				pacienteActualizado.setPassword(password);
 				pacienteActualizado.setDni(dni);
@@ -401,32 +625,33 @@ public class AdministradorServlet extends HttpServlet {
 				pacienteActualizado.setEmail(email);
 				pacienteActualizado.setTelefono(telefono);
 				pacienteActualizado.setFechaNacimiento(fechaNacimiento);
-//				System.out.println("id " + pacienteActualizado.getId());
-//				System.out.println("username " + pacienteActualizado.getUsername());
-//				System.out.println("pass " + pacienteActualizado.getPassword());
-//				System.out.println("dni " + pacienteActualizado.getDni());
-//				System.out.println("nombre " + pacienteActualizado.getNombre());
-//				System.out.println("apellido1 " + pacienteActualizado.getApellido1());
-//				System.out.println("ape2 " + pacienteActualizado.getApellido2());
-//				System.out.println("email " + pacienteActualizado.getEmail());
-//				System.out.println("telefon" + pacienteActualizado.getTelefono());
-//				System.out.println("fecha " + pacienteActualizado.getFechaNacimiento());
-						
 				
-				   pacienteDAO.actualizarPaciente(pacienteActualizado);
-		            response.sendRedirect("PacienteServlet?action=listarPacientes");
+
+						
+			
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
         	
          
-        
+			
+			try {
+						administradorDAO.asignarPermisosPaciente(administrador.getId(),pacienteActualizado.getId());
+				boolean resultado=administradorDAO.actualizarPaciente(administrador.getId(), pacienteActualizado);
+				  response.sendRedirect("AdministradorServlet?action=listarPacientes&id="+administrador.getId());
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+	          
     } 
     
     
     private void actualizarMedico(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	int id = Integer.parseInt(request.getParameter("id"));
+    	int idAdministrador = Integer.parseInt(request.getParameter("idAdministrador"));
+    	int idMedico = Integer.parseInt(request.getParameter("idMedico"));
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String dni = request.getParameter("dni");
@@ -439,10 +664,19 @@ public class AdministradorServlet extends HttpServlet {
         java.util.Date fechaNacimiento = null;
 			fechaNacimiento =  Date.valueOf(request.getParameter("fechaNacimiento"));
        
-        	Medico medicoActualizado;
+       
+			Administrador administrador=null;
 			try {
-				medicoActualizado = medicoDAO.getMedicoById(id);
-				medicoActualizado.setId(id);
+				administrador=administradorDAO.getAdministradorById(idAdministrador);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		 	Medico medicoActualizado=null;
+			try {
+//				administrador=administradorDAO.getAdministradorById(idAdministrador);
+				medicoActualizado = medicoDAO.getMedicoById(idMedico);
+				medicoActualizado.setId(idMedico);
 				medicoActualizado.setUsername(username);
 				medicoActualizado.setPassword(password);
 				medicoActualizado.setDni(dni);
@@ -455,16 +689,23 @@ public class AdministradorServlet extends HttpServlet {
 				medicoActualizado.setEspecialidad(especialidad);
 
 						
-				
-				medicoDAO.actualizarMedico(medicoActualizado);
-		            response.sendRedirect("MedicoServlet?action=listarMedicos");
+			
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
         	
          
-        
+			
+			try {
+						administradorDAO.asignarPermisosMedico(administrador.getId(),medicoActualizado.getId());
+				boolean resultado=administradorDAO.actualizarMedico(administrador.getId(), medicoActualizado);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+	            response.sendRedirect("AdministradorServlet?action=listarMedicos&id="+administrador.getId());
     } 
     
     
@@ -473,7 +714,8 @@ public class AdministradorServlet extends HttpServlet {
     
     
     private void actualizarAdministrador(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	int id = Integer.parseInt(request.getParameter("id"));
+    	
+    	int id = Integer.parseInt(request.getParameter("idAdministrador"));
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         System.out.println("PASSWORDD " + password);
@@ -503,7 +745,7 @@ public class AdministradorServlet extends HttpServlet {
 						
 				
 					administradorDAO.actualizarAdministrador(administradorActualizado);
-		            response.sendRedirect("AdministradorServlet?action=listarAdministradores");
+		            response.sendRedirect("AdministradorServlet?action=irIndexAdministrador&id="+administradorActualizado.getId());
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

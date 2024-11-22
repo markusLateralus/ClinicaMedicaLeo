@@ -10,16 +10,22 @@
 <html lang="es">
 <head>
     <title>Indiex del medico</title>
-    <link rel="stylesheet" type="text/css" href="css/HorarioDelMedico.css">
+    <link rel="stylesheet" type="text/css" href="css/indexMedico.css">
     <style>
     .disponible { background-color: green; color: white; font-size:20px;}
     .ocupado { background-color: red; color: white; font-size:20px;}
 </style>
 </head>
+<%
+Medico medico=(Medico) request.getAttribute("medico");
+String tipoUsuario = (String) session.getAttribute("tipoUsuario");
+%>
 <body>
 <header>
 <div class="divLogo">
+<a href="MedicoServlet?action=irIndexMedico&id=<%=medico.getId()%>">
     <img src="imagenes/ClinicaLeo2.png" alt="Logo de Clínica LEO" class="logo">
+    </a>
 </div>
 <div class="divH1">
     <h1>Clínica LEO</h1>
@@ -28,23 +34,28 @@
 
 <nav>
     <ul class="menu">
-        <li><a href="MedicoServlet?action=listarMedicos">Lista de Médicos</a></li>
+        <li><a href="MedicoServlet?action=irIndexMedico&id=<%=medico.getId()%>">Consultar horario semanal</a></li>
         <!-- Submenú de Datos personales -->
         <li>
             <a href="#">Datos Personales</a>
             <ul class="submenu">
-                <li><a href="PacienteServlet?action=consultarDatos">Consultarlos</a></li>
-                <li><a href="PacienteServlet?action=editarDatos">Editarlos</a></li>
+                <li><a href="MedicoServlet?action=verMedico&id=<%=medico.getId()%>">Consultarlos</a></li>
+                <li><a href="MedicoServlet?action=irEditarMedico&id=<%=medico.getId()%>">Editarlos</a></li>
             </ul>
         </li>
         <li><a href="LogoutServlet">Cerrar Sesión</a></li>
     </ul>
+        <div class="divTipoUsuario">
+  	  <h4><%= medico.getNombre() %></h4>
+         <h4><%= "Tipo Usuario: " + tipoUsuario %></h4>
+      </div>
 </nav>
-<br><br><br><br><br>
+
+<br><br>
+
 <main>
 <%
-// Obtener el tipo de usuario desde la sesión
-String tipoUsuario = (String) session.getAttribute("tipoUsuario");
+
 
 String medicoId=(String) request.getParameter("id");
 
@@ -56,7 +67,7 @@ if (tipoUsuario == null) {
 }
     // Si es Médico o Administrador, puede ver la lista
 	 %>
-	  <%= tipoUsuario %>
+	
 	 
 	 
 <%if ( tipoUsuario.equals("MEDICO")){ %>	 
@@ -116,7 +127,7 @@ if (tipoUsuario == null) {
                         <form action="RealizarReservaServlet" method="post">
                             <input type="hidden" name="action" value="citaMedica">
                             <input type="hidden" name="id" value="<%= horarioId %>">
-                               <input type="hidden" name="idMedico" value="<%= medicoId %>">
+                               <input type="hidden" name="idMedico" value="<%= medico.getId() %>">
                             <div class="disponible" >Libre</div>
                         </form>
                     <% } else {
@@ -137,13 +148,27 @@ if (tipoUsuario == null) {
       
 
 </main>
-<footer>
-    <div class="social-icons">
-        <a href="https://www.facebook.com" target="_blank"><img src="images/facebook-icon.png" alt="Facebook"></a>
-        <a href="https://www.instagram.com" target="_blank"><img src="images/instagram-icon.png" alt="Instagram"></a>
-        <a href="https://www.youtube.com" target="_blank"><img src="imagenes/youtubeES.png" alt="YouTube"></a>
-    </div>
-</footer>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+	<footer class="footer">
+		<div class="footer-container">
+			<div class="footer-left">
+				<a href="#contacto">Contacto</a> <a href="#aviso-legal">Aviso
+					Legal</a> <a href="#politicas-privacidad">Políticas de Privacidad</a>
+			</div>
+			<div class="footer-right">
+				<a href="https://www.facebook.com" target="_blank"><img
+					src="imagenes/facebook.png" alt="Facebook"></a> <a
+					href="https://www.instagram.com" target="_blank"><img
+					src="imagenes/instagram.png" alt="Instagram"></a> <a
+					href="https://www.youtube.com" target="_blank"><img
+					src="imagenes/youtube.png" alt="YouTube"></a>
+			</div>
+		</div>
+
+		<p class="footer-author">Autor: Marcos Antonio Arrornes Alcañiz
+			&copy; 2024</p>
+
+	</footer>
   
 
 </body>

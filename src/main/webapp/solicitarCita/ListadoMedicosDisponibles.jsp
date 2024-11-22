@@ -2,6 +2,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="modelos.Medico" %>
+<%@ page import="modelos.Paciente" %>
+<%@ page import="java.util.Date" %>
 <%@ page import="dao.MedicoDAO" %>
 <%@ page import="modelos.Administrador" %>
 <%@ page import="dao.AdministradorDAO" %>
@@ -11,10 +13,17 @@
     <title>Lista de Medicos para pedir cita</title>
     <link rel="stylesheet" type="text/css" href="css/ListadoMedicosDisponibles.css">
 </head>
+<% 
+// Obtener la acción del parámetro
+String tipoUsuario = (String) session.getAttribute("tipoUsuario");
+    Paciente paciente = (Paciente) request.getAttribute("paciente");
+%>
 <body>
 <header>
 <div class="divLogo">
+<a href="PacienteServlet?action=irIndexPaciente&id=<%=paciente.getId()%>">
     <img src="imagenes/ClinicaLeo2.png" alt="Logo de Clínica LEO" class="logo">
+    </a>
 </div>
 <div class="divH1">
     <h1>Clínica LEO</h1>
@@ -23,33 +32,29 @@
 
 <nav>
     <ul class="menu">
-        <li><a href="MedicoServlet?action=listarMedicos">Lista de Médicos</a></li>
+        <li><a href="ConsultarCitaServlet?action=irSolicitarCita&id=<%=paciente.getId()  %>" >Consultar especialistas</a></li>
         <!-- Submenú de Datos personales -->
+       <li><a href="RealizarReservaServlet?action=mostrarNotificaciones&idPaciente=<%=paciente.getId()  %>" >Consultar notificaciones</a></li>
+     
         <li>
             <a href="#">Datos Personales</a>
             <ul class="submenu">
-                <li><a href="PacienteServlet?action=consultarDatos">Consultarlos</a></li>
-                <li><a href="PacienteServlet?action=editarDatos">Editarlos</a></li>
+                <li><a href="PacienteServlet?action=verPaciente&id=<%= paciente.getId() %>">Consultarlos</a></li>
+                <li><a href="PacienteServlet?action=irEditarPaciente&id=<%= paciente.getId() %>">Editarlos</a></li>
             </ul>
         </li>
         <li><a href="LogoutServlet">Cerrar Sesión</a></li>
     </ul>
+            <div class="divTipoUsuario">
+  	  <h4><%= paciente.getNombre() %></h4>
+         <h4><%= "Tipo Usuario: " + tipoUsuario %></h4>
+      </div>
 </nav>
-<br><br><br><br><br>
+<br>
+
 <main>
-    <%
-        // Obtener el tipo de usuario desde la sesión
-        String tipoUsuario = (String) session.getAttribute("tipoUsuario");
 
-        // Controlar acceso a la lista de pacientes
-        if (tipoUsuario == null) {
-            // Si el usuario no está logado, redirigir al login
-            response.sendRedirect("Login.jsp");
-            return;
-        }
-    %>
 
-    <% if (tipoUsuario.equals("PACIENTE")) { %>
         <h2>LISTA DE MÉDICOS PARA PEDIR CITA</h2>
         <table border="1">
             <tr>
@@ -72,20 +77,36 @@
                 <td><%= medico.getApellido2() %></td>
                 <td><%= medico.getEspecialidad() %></td>
                 <td>
-                    <a href="ConsultarCitaServlet?action=verHorarioDelMedico&id=<%= medico.getId() %>">VER HORARIO</a>
+                    <a href="ConsultarCitaServlet?action=verHorarioDelMedico&id=<%= medico.getId() %>&idPaciente=<%=paciente.getId()%>">VER HORARIO</a>
                 </td>
             </tr>
             <% } } %>
         </table>
-    <% } %>
+    
 
 </main>
-<footer>
-    <div class="social-icons">
-        <a href="https://www.facebook.com" target="_blank"><img src="images/facebook-icon.png" alt="Facebook"></a>
-        <a href="https://www.instagram.com" target="_blank"><img src="images/instagram-icon.png" alt="Instagram"></a>
-        <a href="https://www.youtube.com" target="_blank"><img src="imagenes/youtubeES.png" alt="YouTube"></a>
-    </div>
-</footer>
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+	<footer class="footer">
+		<div class="footer-container">
+			<div class="footer-left">
+				<a href="#contacto">Contacto</a> <a href="#aviso-legal">Aviso
+					Legal</a> <a href="#politicas-privacidad">Políticas de Privacidad</a>
+			</div>
+			<div class="footer-right">
+				<a href="https://www.facebook.com" target="_blank"><img
+					src="imagenes/facebook.png" alt="Facebook"></a> <a
+					href="https://www.instagram.com" target="_blank"><img
+					src="imagenes/instagram.png" alt="Instagram"></a> <a
+					href="https://www.youtube.com" target="_blank"><img
+					src="imagenes/youtube.png" alt="YouTube"></a>
+			</div>
+		</div>
+
+		<p class="footer-author">Autor: Marcos Antonio Arrornes Alcañiz
+			&copy; 2024</p>
+
+	</footer>
 </body>
+
 </html>

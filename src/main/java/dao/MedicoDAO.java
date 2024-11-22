@@ -170,7 +170,53 @@ public class MedicoDAO {
         }
         return medico;
     }
+  
+    // Método para obtener un objeto Medico a partir de sus propiedades
+    public Medico obtenerMedico(int id,String username,String password,String dni, String nombre,String apellido1, String apellido2,String especialidad, String email, String telefono, Date fechaNacimiento) {
+      
+    	Medico medico = null;
+    	String query = "SELECT * FROM medicos WHERE id = ?  AND username = ? AND password = ? AND dni = ? AND nombre = ? "
+        		+ "AND apellido1 = ? AND apellido2 = ? AND email = ? AND especialidad = ? AND telefono = ? AND fecha_nacimiento = ?";
+        try (Connection conn = dataSource.getConnection()) {
+        	  PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, id);
+            stmt.setString(2, username);
+            stmt.setString(3, password);
+            stmt.setString(4, dni);
+            stmt.setString(5, nombre);
+            stmt.setString(6, apellido1);
+            stmt.setString(7, apellido2);
+            stmt.setString(8, especialidad);
+            stmt.setString(9, email);
+            stmt.setString(10, telefono);
+            stmt.setDate(11,  new java.sql.Date(fechaNacimiento.getTime()));
 
+       ResultSet rs = stmt.executeQuery(); 
+                
+              
+if (rs.next()) {
+	medico = new Medico();
+                        medico.setId(rs.getInt("id"));
+                        medico.setUsername( rs.getString("username"));
+                        medico.setPassword( rs.getString("password"));
+                        medico.setDni(rs.getString("dni"));
+                        medico.setNombre(rs.getString("nombre"));
+                        medico.setApellido1(rs.getString("apellido1"));
+                        medico.setApellido2(rs.getString("apellido2"));
+                        medico.setEspecialidad(rs.getString("especialidad"));
+                        medico.setTelefono(rs.getString("telefono"));
+                        medico.setEmail(rs.getString("email"));
+                        medico.setFechaNacimiento(rs.getDate("fecha_nacimiento"));
+                    
+                    
+            }
+        } catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+            return medico;
+    }
+    
     
     public List<Horario> obtenerHorariosPorMedico(int medicoId) {
         List<Horario> horarios = new ArrayList<>();

@@ -63,8 +63,6 @@ public class ConsultarCitaServlet extends HttpServlet {
     	}else if ("verHorarioDelMedico".equals(action)) {
     		verHorarioDelMedico(request,response);
     		
-    	}else if("irIndexMedico".equals(action)) {
-    		this.irIndexMedico(request,response);
     	}
     }
     
@@ -76,6 +74,7 @@ public class ConsultarCitaServlet extends HttpServlet {
         	Paciente paciente=null;
      		try {
      			paciente = pacienteDAO.getPacienteById(id);
+     		
      		} catch (SQLException e) {
      			// TODO Auto-generated catch block
      			e.printStackTrace();
@@ -95,47 +94,30 @@ public class ConsultarCitaServlet extends HttpServlet {
     private void verHorarioDelMedico(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("id medico " + request.getParameter("id"));
     	int medicoId = Integer.parseInt(request.getParameter("id"));
+    	int pacienteId=Integer.parseInt(request.getParameter("idPaciente"));
         
         MedicoDAO medicoDAO=null;
+        Paciente paciente=null;
+        Medico medico=null;
 		try {
 			medicoDAO = new MedicoDAO();
 			  List<Horario> horarios = medicoDAO.obtenerHorariosPorMedico(medicoId);
-//			  for(Horario h:horarios) {
-//				  System.out.println("horarios" + h.getDia() + ", " + h.getHora() + ", " + h.getEstado() + ", id " + h.g);
-//			  }
+				medico=medicoDAO.getMedicoById(medicoId);
+			  paciente = pacienteDAO.getPacienteById(pacienteId);
 		        request.setAttribute("horarios", horarios);
-				request.setAttribute("medicoId", medicoId);
+				request.setAttribute("medico", medico);
+				request.setAttribute("paciente", paciente);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
+		
         RequestDispatcher dispatcher = request.getRequestDispatcher("./solicitarCita/HorarioDelMedico.jsp");
         dispatcher.forward(request, response);
     
     }
-    private void irIndexMedico(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("id medico " + request.getParameter("id"));
-    	int medicoId = Integer.parseInt(request.getParameter("id"));
-        
-        MedicoDAO medicoDAO=null;
-		try {
-			medicoDAO = new MedicoDAO();
-			  List<Horario> horarios = medicoDAO.obtenerHorariosPorMedico(medicoId);
-//			  for(Horario h:horarios) {
-//				  System.out.println("horarios" + h.getDia() + ", " + h.getHora() + ", " + h.getEstado() + ", id " + h.g);
-//			  }
-		        request.setAttribute("horarios", horarios);
-				request.setAttribute("medicoId", medicoId);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("IndexMedico.jsp");
-        dispatcher.forward(request, response);// TODO Auto-generated method stub
-		
-	}
     
     
 //   

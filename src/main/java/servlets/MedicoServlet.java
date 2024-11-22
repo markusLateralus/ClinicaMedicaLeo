@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import modelos.Horario;
 import modelos.Medico;
 import java.io.IOException;
 import java.sql.Date;
@@ -45,9 +46,35 @@ public class MedicoServlet extends HttpServlet{
         	eliminarMedico(request, response);
         } else if ("verMedico".equals(action)) {
         	verMedico(request, response);
-        }
+        }else if("irIndexMedico".equals(action)) {
+    		this.irIndexMedico(request,response);
+    	}
     }
-    
+    private void irIndexMedico(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("id medico " + request.getParameter("id"));
+    	int medicoId = Integer.parseInt(request.getParameter("id"));
+        
+        MedicoDAO medicoDAO=null;
+        Medico medico=null;
+		try {
+			medicoDAO = new MedicoDAO();
+			  List<Horario> horarios = medicoDAO.obtenerHorariosPorMedico(medicoId);
+			  medico=medicoDAO.getMedicoById(medicoId);
+			  
+//			  for(Horario h:horarios) {
+//				  System.out.println("horarios" + h.getDia() + ", " + h.getHora() + ", " + h.getEstado() + ", id " + h.g);
+//			  }
+		        request.setAttribute("horarios", horarios);
+				request.setAttribute("medico", medico);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("./medico/IndexMedico.jsp");
+        dispatcher.forward(request, response);// TODO Auto-generated method stub
+		
+	}
     
     private void verMedico(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
    	 int id = Integer.parseInt(request.getParameter("id"));
@@ -154,10 +181,20 @@ public class MedicoServlet extends HttpServlet{
         medicoActualizado.setTelefono(request.getParameter("telefono"));
         medicoActualizado.setFechaNacimiento(Date.valueOf(request.getParameter("fechaNacimiento")));
         medicoActualizado.setEspecialidad(request.getParameter("especialidad"));
+		System.out.println("id " + medicoActualizado.getId());
+		System.out.println("username " + medicoActualizado.getUsername());
+		System.out.println("pass " + medicoActualizado.getPassword());
+		System.out.println("dni " + medicoActualizado.getDni());
+		System.out.println("nombre " + medicoActualizado.getNombre());
+		System.out.println("apellido1 " + medicoActualizado.getApellido1());
+		System.out.println("ape2 " + medicoActualizado.getApellido2());
+		System.out.println("email " + medicoActualizado.getEmail());
+		System.out.println("telefon" + medicoActualizado.getTelefono());
+		System.out.println("fecha " + medicoActualizado.getFechaNacimiento());
 
         try {
             medicoDAO.actualizarMedico(medicoActualizado); // Actualiza el médico
-            response.sendRedirect("MedicoServlet?action=listarMedicos"); // Redirige a la lista de médicos
+            response.sendRedirect("MedicoServlet?action=irEditarMedico&id="+id); // Redirige a la lista de médicos
         } catch (SQLException e) {
             throw new ServletException(e);
         }

@@ -1,8 +1,11 @@
 package servlets;
 
 import dao.MedicoDAO;
+import dao.NotificacionDAO;
 import dao.PacienteDAO;
+import modelos.Horario;
 import modelos.Medico;
+import modelos.Notificacion;
 import modelos.Paciente;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -10,6 +13,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -22,14 +27,15 @@ public class PacienteServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 	private PacienteDAO pacienteDAO;
-	private MedicoDAO medicoDAO;
+	private NotificacionDAO notificacionDAO;
 
     public void init() throws ServletException {
     	
         try {
-        	 System.out.println("abriendo pacienteServlet");
+//        	 System.out.println("abriendo pacienteServlet");
             pacienteDAO = new PacienteDAO();
-            medicoDAO=new MedicoDAO();
+            notificacionDAO=new NotificacionDAO();
+           
         } catch (Exception e) {
             throw new ServletException(e);
         }
@@ -38,9 +44,7 @@ public class PacienteServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
 
-        if ("listarPacientes".equals(action)) {
-        	listarPacientes(request, response);
-        }  else if ("irCrearPaciente".equals(action)) {
+        	if ("irCrearPaciente".equals(action)) {
         	irCrearPaciente(request, response);
         }  else if ("irEditarPaciente".equals(action)) {
         	irEditarPaciente(request, response);
@@ -48,21 +52,58 @@ public class PacienteServlet extends HttpServlet {
         	eliminarPaciente(request, response);
         } else if ("verPaciente".equals(action)) {
         	verPaciente(request, response);
-        }else if ("listarMedicos".equals(action)) {
-        	listarMedicos(request, response);
-        }
+        }else if("irIndexPaciente".equals(action)) {
+    		this.irIndexPaciente(request,response);
+    	}else if ("eliminarMensaje".equals(action)) {
+    		this.eliminarMensaje(request,response);
+    	}
     }
+    private void eliminarMensaje(HttpServletRequest request, HttpServletResponse response) {
+            int indice = Integer.parseInt(request.getParameter("indice"));
 
-    private void listarMedicos(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            List<Medico> listaMedicos = medicoDAO.getAllMedicos(); // Obtener todos los médicos
-            request.setAttribute("listaMedicos", listaMedicos);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("./medico/ListarMedicos.jsp"); // Redirige a la lista de médicos
-            dispatcher.forward(request, response);
-        } catch (SQLException e) {
-            throw new ServletException(e);
+            HttpSession session = request.getSession();
+            List<String> mensajesPaciente = (List<String>) session.getAttribute("mensajesPaciente");
+
+            if (mensajesPaciente != null && indice >= 0 && indice < mensajesPaciente.size()) {
+                mensajesPaciente.remove(indice);
+                session.setAttribute("mensajesPaciente", mensajesPaciente);
+            }
+
+            try {
+				response.sendRedirect("./paciente/indexPaciente.jsp");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
-    }
+		
+	
+
+	private void irIndexPaciente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("id medico " + request.getParameter("id"));
+    	int idPaciente = Integer.parseInt(request.getParameter("id"));
+        
+        PacienteDAO pacienteDAO=null;
+        Paciente paciente=null;
+		try {
+			pacienteDAO = new PacienteDAO();
+			  List<Horario> horarios = pacienteDAO.obtenerHorariosPorMedico(idPaciente);
+			  paciente=pacienteDAO.getPacienteById(idPaciente);
+			  List<Notificacion> notificaciones = notificacionDAO.obtenerNotificacionesActivasParaPacientes(idPaciente);
+		        request.setAttribute("notificaciones", notificaciones);
+			  
+		        request.setAttribute("horarios", horarios);
+				request.setAttribute("paciente", paciente);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("./paciente/IndexPaciente.jsp");
+        dispatcher.forward(request, response);// TODO Auto-generated method stub
+		
+	}
+
     private void verPaciente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	 int id = Integer.parseInt(request.getParameter("id"));
     	Paciente paciente=null;
@@ -82,17 +123,7 @@ public class PacienteServlet extends HttpServlet {
 		
 	}
     
-    private void listarPacientes(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            List<Paciente> listaPacientes = pacienteDAO.getAllPacientes();
-            request.setAttribute("listaPacientes", listaPacientes);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("./paciente/ListarPacientes.jsp");
-         
-            dispatcher.forward(request, response);
-        } catch (SQLException e) {
-            throw new ServletException(e);
-        }
-    }
+
 
     private void irEditarPaciente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
@@ -164,7 +195,7 @@ public class PacienteServlet extends HttpServlet {
         java.util.Date fechaNacimiento = null;
 			fechaNacimiento =  Date.valueOf(request.getParameter("fechaNacimiento"));
        
-        	Paciente pacienteActualizado;
+        	Paciente pacienteActualizado=null;
 			try {
 				pacienteActualizado = pacienteDAO.getPacienteById(id);
 				pacienteActualizado.setId(id);
@@ -177,20 +208,21 @@ public class PacienteServlet extends HttpServlet {
 				pacienteActualizado.setEmail(email);
 				pacienteActualizado.setTelefono(telefono);
 				pacienteActualizado.setFechaNacimiento(fechaNacimiento);
-//				System.out.println("id " + pacienteActualizado.getId());
-//				System.out.println("username " + pacienteActualizado.getUsername());
-//				System.out.println("pass " + pacienteActualizado.getPassword());
-//				System.out.println("dni " + pacienteActualizado.getDni());
-//				System.out.println("nombre " + pacienteActualizado.getNombre());
-//				System.out.println("apellido1 " + pacienteActualizado.getApellido1());
-//				System.out.println("ape2 " + pacienteActualizado.getApellido2());
-//				System.out.println("email " + pacienteActualizado.getEmail());
-//				System.out.println("telefon" + pacienteActualizado.getTelefono());
-//				System.out.println("fecha " + pacienteActualizado.getFechaNacimiento());
+				System.out.println("id " + pacienteActualizado.getId());
+				System.out.println("username " + pacienteActualizado.getUsername());
+				System.out.println("pass " + pacienteActualizado.getPassword());
+				System.out.println("dni " + pacienteActualizado.getDni());
+				System.out.println("nombre " + pacienteActualizado.getNombre());
+				System.out.println("apellido1 " + pacienteActualizado.getApellido1());
+				System.out.println("ape2 " + pacienteActualizado.getApellido2());
+				System.out.println("email " + pacienteActualizado.getEmail());
+				System.out.println("telefon" + pacienteActualizado.getTelefono());
+				System.out.println("fecha " + pacienteActualizado.getFechaNacimiento());
 						
 				
 				   pacienteDAO.actualizarPaciente(pacienteActualizado);
-		            response.sendRedirect("PacienteServlet?action=listarPacientes");
+//		            response.sendRedirect("PacienteServlet?action=listarPacientes");
+				   response.sendRedirect("PacienteServlet?action=irEditarPaciente&id="+pacienteActualizado.getId());
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

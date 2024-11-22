@@ -7,6 +7,7 @@ import java.util.List;
 import modelos.Paciente;
 import modelos.Rol;
 import modelos.Administrador;
+import modelos.Horario;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -168,6 +169,29 @@ public class PacienteDAO {
             }
         }
         return paciente;
+    }
+    
+    public List<Horario> obtenerHorariosPorMedico(int medicoId) {
+        List<Horario> horarios = new ArrayList<>();
+        String query = "SELECT * FROM horarios WHERE medico_id = ?";
+        try (Connection conn = dataSource.getConnection()){
+             PreparedStatement stmt = conn.prepareStatement(query); 
+            stmt.setInt(1, medicoId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Horario horario = new Horario();
+                    horario.setId(rs.getInt("id"));
+                    horario.setMedicoId(rs.getInt("medico_id"));
+                    horario.setDia(rs.getString("dia"));
+                    horario.setHora(rs.getString("hora"));
+                    horario.setEstado(rs.getString("estado"));
+                    horarios.add(horario);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return horarios;
     }
 }
 

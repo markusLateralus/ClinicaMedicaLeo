@@ -36,10 +36,14 @@ h1 {
   
     
 }
-h2{
-	color: #007bbf;
-	text-align: center;
-	
+
+
+.divTipoUsuario{
+	 display: flex;
+            justify-content: space-between; /* Espacia los elementos a los extremos */
+            align-items: center; /* Alinea verticalmente */
+            padding: 10px;
+	color:white;
 }
 /* Navigation menu styles */
 nav {
@@ -73,6 +77,34 @@ nav ul li a {
 nav ul li a:hover {
     background-color: #005f8c; /* Hover effect with a darker blue */
 }
+
+.contenedorPrincipal{
+	  display: flex;
+            flex-direction: column; /* Coloca los elementos en columna */
+            justify-content: space-between; /* Espacia los elementos al extremo superior e inferior */
+            height: 800px;
+            align-items: left;
+}
+   .contenedorSuperior {
+            padding: 20px;
+        	color:black;
+            text-align: center;
+            font-size:24px;
+         
+        
+        }
+
+
+        /* Contenedor inferior */
+        .contenedorInferior {
+            padding: 20px;
+         
+            text-align: center;
+                   font-size:20px;
+            border-top: 1px solid #ccc;
+        }
+
+ 
 
 /* Table styles */
 table {
@@ -118,28 +150,51 @@ button:hover {
 
 /* Footer styles */
 footer {
-    background-color: #007bbf; /* Footer background */
-    color: white;
-    padding: 1rem;
-    text-align: center;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
+	background-color: #007bbf; /* Footer background */
+	color: white;
+	padding: 20px 0;
+	text-align: center;
+	width: 100%;
+	bottom: 0;
+	position: relative;
 }
 
-footer .social-icons {
-    margin-top: 1rem;
+.footer-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	max-width: 1200px;
+	margin: 0 auto;
 }
 
-footer .social-icons a {
-    margin: 0 10px;
-    color: white;
-    text-decoration: none;
-    font-size: 1.5rem;
+.footer-left {
+	margin-left: -140px;
+	display: flex;
+	gap: 15px; /* Espacio entre enlaces o íconos */
 }
 
-footer .social-icons a:hover {
-    color: #e6f2f8; /* Lighter hover effect */
+.footer-right {
+	display: flex;
+	gap: 15px; /* Espacio entre enlaces o íconos */
+}
+
+.footer-left a, .footer-right a {
+	color: #fff;
+	text-decoration: none;
+	font-size: 16px;
+}
+
+.footer-left a:hover {
+	text-decoration: underline;
+}
+
+.footer-right img {
+	width: 30px;
+	height: 30px;
+}
+
+.footer-right a:hover img {
+	filter: brightness(0.8);
 }
 
 /* Responsive design */

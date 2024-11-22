@@ -68,8 +68,8 @@ public class LoginServlet extends HttpServlet {
             if (paciente != null) {
                 // Usuario y tipo de usuario coinciden
                 request.getSession().setAttribute("tipoUsuario", tipoUsuario);
-                response.sendRedirect("ConsultarCitaServlet?action=irSolicitarCita&id="+paciente.getId() );  // Redirigir a la página de inicio de médicos
-     
+//                response.sendRedirect("ConsultarCitaServlet?action=irSolicitarCita&id="+paciente.getId() );  // Redirigir a la página de inicio de médicos
+                response.sendRedirect("PacienteServlet?action=irIndexPaciente&id="+paciente.getId());
                 return;
             }
         }
@@ -83,7 +83,7 @@ public class LoginServlet extends HttpServlet {
                 request.getSession().setAttribute("tipoUsuario", tipoUsuario);
                 request.getSession().setAttribute("medicoId", medicoId);
 //                response.sendRedirect("ConsultarCitaServlet?action=verHorarioDelMedico&id="+medicoId);
-                response.sendRedirect("ConsultarCitaServlet?action=irIndexMedico&id="+medicoId );  // Redirigir a la página de inicio de médicos
+                response.sendRedirect("MedicoServlet?action=irIndexMedico&id="+medicoId );  // Redirigir a la página de inicio de médicos
                 return;
             }
         }
@@ -93,10 +93,12 @@ public class LoginServlet extends HttpServlet {
         if ("ADMINISTRADOR".equals(tipoUsuario)) {
         	administrador = administradorDAO.logarse(username, password);
             if (administrador != null) {
+            	int idAdministrador= administrador.getId();
                 // Usuario y tipo de usuario coinciden
                 request.getSession().setAttribute("tipoUsuario", tipoUsuario);
+                request.getSession().setAttribute("idAdmininstrador", idAdministrador);
 //                response.sendRedirect("AdministradorServlet?action=verAdministrador&id="+administrador.getId() );  // Redirigir a la página de inicio de médicos
-                response.sendRedirect("AdministradorServlet?action=irIndexAdministrador&id="+administrador.getId() );  // Redirigir a la página de inicio de médicos
+                response.sendRedirect("AdministradorServlet?action=irIndexAdministrador&id="+idAdministrador );  // Redirigir a la página de inicio de médicos
 
                 return;
             }
@@ -129,7 +131,7 @@ public class LoginServlet extends HttpServlet {
             administrador = administradorDAO.logarse(username, password);
             if (administrador != null) {
                 // Usuario existe como médico, pero seleccionó el tipo incorrecto
-                request.setAttribute("error", "Credenciales o tipo de usuario incorrecto, Inéntelo de  nuevo.");
+                request.setAttribute("error", "Credenciales o tipo de usuario incorrecto, Inténtelo de  nuevo.");
             }
         }
         
@@ -137,7 +139,7 @@ public class LoginServlet extends HttpServlet {
 
         // Si no se encontró el usuario en absoluto (ni como médico ni como paciente ni como administrador)
         if (paciente == null && medico == null && administrador==null) {
-            request.setAttribute("error", "Credenciales incorrectas. Inténtalo de nuevo.");
+            request.setAttribute("error", "Credenciales incorrectas. Inténtelo de nuevo.");
         }
 
         // Volver al formulario de login con el error

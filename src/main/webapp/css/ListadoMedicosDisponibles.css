@@ -27,6 +27,13 @@ header img {
 	text-align: center;
 	margin-top:-90px;
 }
+.divTipoUsuario{
+	 display: flex;
+            justify-content: space-between; /* Espacia los elementos a los extremos */
+            align-items: center; /* Alinea verticalmente */
+            padding: 10px;
+	color:white;
+}
 
 h1 {
 	font-size:60px;
@@ -118,29 +125,57 @@ button:hover {
 
 /* Footer styles */
 footer {
-    background-color: #007bbf; /* Footer background */
-    color: white;
-    padding: 1rem;
-    text-align: center;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
+	background-color: #007bbf; /* Footer background */
+	color: white;
+	padding: 20px 0;
+	text-align: center;
+	width: 100%;
+	bottom: 0;
+	position: relative;
 }
 
-footer .social-icons {
-    margin-top: 1rem;
+.footer-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	max-width: 1200px;
+	margin: 0 auto;
 }
 
-footer .social-icons a {
-    margin: 0 10px;
-    color: white;
-    text-decoration: none;
-    font-size: 1.5rem;
+.footer-left {
+	margin-left: -140px;
+	display: flex;
+	gap: 15px; /* Espacio entre enlaces o íconos */
 }
 
-footer .social-icons a:hover {
-    color: #e6f2f8; /* Lighter hover effect */
+.footer-right {
+	display: flex;
+	gap: 15px; /* Espacio entre enlaces o íconos */
 }
+
+.footer-left a, .footer-right a {
+	color: #fff;
+	text-decoration: none;
+	font-size: 16px;
+}
+
+.footer-left a:hover {
+	text-decoration: underline;
+}
+
+.footer-right img {
+	width: 30px;
+	height: 30px;
+}
+
+.footer-right a:hover img {
+	filter: brightness(0.8);
+}
+
+
+
+
+
 
 /* Responsive design */
 @media screen and (max-width: 768px) {
