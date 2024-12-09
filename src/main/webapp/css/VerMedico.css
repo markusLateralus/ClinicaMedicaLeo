@@ -135,7 +135,7 @@ nav ul li a:hover {
         margin-top: 20px;
     }
 
-    .divRegresar a, button{
+    .divRegresar button{
         display: inline-block;
         padding: 10px 20px;
         background-color: #007bbf;
@@ -145,7 +145,7 @@ nav ul li a:hover {
         font-weight: bold;
         transition: background-color 0.3s, color 0.3s;
     }
-        .divRegresar a:hover,button:hovver{
+        .divRegresar button:hovver{
             background-color: #3e64ff;
             color: #fff;
         }
@@ -206,7 +206,6 @@ footer {
 }
 
 .footer-left {
-	margin-left: -140px;
 	display: flex;
 	gap: 15px; /* Espacio entre enlaces o íconos */
 }
@@ -246,25 +245,6 @@ input[type="submit"] {
 
 input[type="submit"]:hover {
     background-color: rgb(65, 150, 69);
-}
-
-
-
-/* Responsive design */
-@media screen and (max-width: 768px) {
-    nav ul {
-        display: block;
-        text-align: left;
-    }
-    
-    nav ul li {
-        display: block;
-        margin: 10px 0;
-    }
-
-    table {
-        width: 100%;
-    }
 }
 
 /* Menu styles */
@@ -327,8 +307,150 @@ input[type="submit"]:hover {
     display: block;
 }
 
+
+
+/* Responsive design */
+@media (max-width: 1200px) {
+    header img {
+        width: 150px;
+    }
+
+    h1 {
+        font-size: 50px;
+    }
+
+    main {
+        max-width: 70%;
+    }
+
+    input, select, button {
+        font-size: 17px;
+        padding: 12px;
+    }
+
+    footer a {
+        font-size: 15px;
+    }
+
+    footer img {
+        width: 26px;
+        height: 26px;
+    }
+}
+
+@media (max-width: 992px) {
+    header img {
+        width: 100px;
+    }
+
+    h1 {
+        font-size: 25px;
+    }
+
+    main {
+        max-width: 80%;
+    }
+
+    input, select, button {
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    footer a {
+        font-size: 14px;
+    }
+
+    footer img {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+		.divLogo { 
+	margin-top: 10px;
+	 margin-left: 10px; 
+	 text-align: center; 
+	 }
+    header img {
+        width: 80px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    main {
+        max-width: 90%;
+        margin: 10px auto;
+        padding: 15px;
+    }
+    .form-group input, .form-group select {
+        font-size: 14px;
+    }
+    input, select, button {
+        font-size: 14px;
+    }
+
+    footer a {
+        font-size: 12px;
+    }
+
+    footer img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-left, .footer-right {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+		.divLogo { 
+	margin-top: 10px;
+	 margin-left: 10px; 
+	 text-align: center; 
+	 }
+	    header h1 {
+        font-size: 18px;
+    }
+	
+    header img {
+        width: 60px;
+    }
+
+    h1 {
+        font-size: 18px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    input, select, button {
+        font-size: 14px;
+    }
+
+    footer img {
+        width: 20px;
+        height: 20px;
+    }
+        footer a {
+        font-size: 12px;
+    }
+}
+
+
+
 /* Responsive submenu behavior */
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
     .menu li {
         display: block;
         width: 100%;
@@ -338,5 +460,3 @@ input[type="submit"]:hover {
         position: static;
     }
 }
-
-

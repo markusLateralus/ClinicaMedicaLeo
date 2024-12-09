@@ -28,10 +28,10 @@ function validarUserName(){
         var esValido=false;
         var nombre=campoUserName.value;
         var totalVocales=nombre.match(/[aeiou]/gi);
-        if(nombre ==null ||  nombre == "" || nombre.length<2 || nombre.length>10 ||totalVocales<1 ){
+        if(nombre ==null ||  nombre == "" || nombre.length<4 || nombre.length>10 ||totalVocales<1 ){
       //agregamos una css al campo para ponerlo rojo
             campoUserName.className="camposConError";
-           let mensajeError="Mínimo 2 letras, máximo 10 y una vocal obligatoria";
+           let mensajeError="Mínimo 4 letras, máximo 10 y una vocal obligatoria";
            //agregamos un texto en el parrafo con el mensaje de error
            errorUserName.innerHTML=mensajeError;
            return esValido;
@@ -49,10 +49,10 @@ function validarPassword(){
 	    var esValido=false;
 	    var nombre=campoPassword.value;
 	    var totalVocales=nombre.match(/[aeiou]/gi);
-	    if(nombre ==null ||  nombre == "" || nombre.length<2 || nombre.length>20 ||totalVocales<1 ){
+	    if(nombre ==null ||  nombre == "" || nombre.length<4 || nombre.length>20 ||totalVocales<1 ){
 	  //agregamos una css al campo para ponerlo rojo
 	        campoPassword.className="camposConError";
-	       let mensajeError="Mínimo 2 letras, máximo 20 y una vocal obligatoria";
+	       let mensajeError="Mínimo 4 letras, máximo 20 y una vocal obligatoria";
 	       //agregamos un texto en el parrafo con el mensaje de error
 	       errorPassword.innerHTML=mensajeError;
 	       return esValido;
@@ -107,10 +107,10 @@ function validarNombre(){
         var esValido=false;
         var nombre=campoNombre.value;
         var totalVocales=nombre.match(/[aeiou]/gi);
-        if(nombre ==null ||  nombre == "" || nombre.length<2 || nombre.length>25 ||totalVocales<1 ){
+        if(nombre ==null ||  nombre == "" || nombre.length<4 || nombre.length>25 ||totalVocales<1 ){
       //agregamos una css al campo para ponerlo rojo
             campoNombre.className="camposConError";
-           let mensajeError="Mínimo 2 letras, máximo 25 y una vocal obligatoria";
+           let mensajeError="Mínimo 4 letras, máximo 25 y una vocal obligatoria";
            //agregamos un texto en el parrafo con el mensaje de error
            errorNombre.innerHTML=mensajeError;
            return esValido;
@@ -132,10 +132,10 @@ function validarApellido1(){
 	    var esValido=false;
 	    var nombre=campoApellido1.value;
 	    var totalVocales=nombre.match(/[aeiou]/gi);
-	    if(nombre ==null ||  nombre == "" || nombre.length<2 || nombre.length>20 ||totalVocales<1 ){
+	    if(nombre ==null ||  nombre == "" || nombre.length<4 || nombre.length>20 ||totalVocales<1 ){
 	  //agregamos una css al campo para ponerlo rojo
 	        campoApellido1.className="camposConError";
-	       let mensajeError="Mínimo 2 letras, máximo 20 y una vocal obligatoria";
+	       let mensajeError="Mínimo 4 letras, máximo 20 y una vocal obligatoria";
 	       //agregamos un texto en el parrafo con el mensaje de error
 	       errorApellido1.innerHTML=mensajeError;
 	       return esValido;
@@ -152,10 +152,10 @@ function validarApellido2(){
 	    var esValido=false;
 	    var nombre=campoApellido2.value;
 	    var totalVocales=nombre.match(/[aeiou]/gi);
-	    if(nombre ==null ||  nombre == "" || nombre.length<2 || nombre.length>20 ||totalVocales<1 ){
+	    if(nombre ==null ||  nombre == "" || nombre.length<4 || nombre.length>20 ||totalVocales<1 ){
 	  //agregamos una css al campo para ponerlo rojo
 	        campoApellido2.className="camposConError";
-	       let mensajeError="Mínimo 2 letras, máximo 20 y una vocal obligatoria";
+	       let mensajeError="Mínimo 4 letras, máximo 20 y una vocal obligatoria";
 	       //agregamos un texto en el parrafo con el mensaje de error
 	       errorApellido2.innerHTML=mensajeError;
 	       return esValido;
@@ -292,7 +292,7 @@ function escribirMensaje(event) {
 
  if(validoUserName && validoPassword && validoDni && validoNombre && validoApellido1 && validoApellido2 &&
 	   validoEmail && validoTelefono && validoEmail && validoFechaNacimiento>=16){
-   document.getElementById("formularioEditarMedico").submit();
+   document.getElementById("formularioInsertarPaciente").submit();
    }
 }
 

@@ -1,13 +1,11 @@
 package servlets;
 
-import dao.RolDAO;
+
 import dao.AdministradorDAO;
 import dao.MedicoDAO;
 import dao.PacienteDAO;
 import modelos.Paciente;
-import modelos.Rol;
 import modelos.Administrador;
-import modelos.Horario;
 import modelos.Medico;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -18,9 +16,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.naming.NamingException;
@@ -89,8 +84,93 @@ public class AdministradorServlet extends HttpServlet {
         }   else if ("irIndexAdministrador".equals(action)) {
         	
         	irIndexAdministrador(request, response);
+        }  else if ("irContacto".equals(action)) {
+        	irContacto(request, response);
+        }else if ("irAvisoLegal".equals(action)) {
+        	irAvisoLegal(request, response);
+        }else if ("irPoliticaPrivacidad".equals(action)) {
+        	irPoliticaPrivacidad(request, response);
         }
+        
     }
+    private void irPoliticaPrivacidad(HttpServletRequest request, HttpServletResponse response) {
+      	int idAdministrador = Integer.parseInt(request.getParameter("id"));
+        Administrador administrador=null;
+   		try {
+//   			medicoDAO = new MedicoDAO();
+   			administradorDAO=new AdministradorDAO();
+   			 administrador=administradorDAO.getAdministradorById(idAdministrador);
+   			request.setAttribute("administrador",administrador);
+   		} catch (Exception e) {
+   			e.printStackTrace();
+   		}
+
+
+       RequestDispatcher dispatcher = request.getRequestDispatcher("PoliticaPrivacidad.jsp");
+        try {
+   		dispatcher.forward(request, response);
+   	} catch (ServletException | IOException e) {
+   		// TODO Auto-generated catch block
+   		e.printStackTrace();
+   		System.out.println("ERROR MARCOS "+ e.getMessage() + " DEJAR CLARO " + e.hashCode()  );
+   	}  
+	}
+
+	private void irAvisoLegal(HttpServletRequest request, HttpServletResponse response) {
+	  	int idAdministrador = Integer.parseInt(request.getParameter("id"));
+	     Administrador administrador=null;
+			try {
+//				medicoDAO = new MedicoDAO();
+				administradorDAO=new AdministradorDAO();
+				 administrador=administradorDAO.getAdministradorById(idAdministrador);
+				request.setAttribute("administrador",administrador);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+
+	    RequestDispatcher dispatcher = request.getRequestDispatcher("AvisoLegal.jsp");
+	     try {
+			dispatcher.forward(request, response);
+		} catch (ServletException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("ERROR MARCOS "+ e.getMessage() + " DEJAR CLARO " + e.hashCode()  );
+		}  
+		
+	}
+
+	private void irContacto(HttpServletRequest request, HttpServletResponse response)  {
+//     System.out.println("id Admin " + request.getParameter("id"));
+  	int idAdministrador = Integer.parseInt(request.getParameter("id"));
+     Administrador administrador=null;
+		try {
+//			medicoDAO = new MedicoDAO();
+			administradorDAO=new AdministradorDAO();
+			 administrador=administradorDAO.getAdministradorById(idAdministrador);
+			request.setAttribute("administrador",administrador);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
+    RequestDispatcher dispatcher = request.getRequestDispatcher("Contacto.jsp");
+     try {
+		dispatcher.forward(request, response);
+	} catch (ServletException | IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		System.out.println("ERROR MARCOS "+ e.getMessage() + " DEJAR CLARO " + e.hashCode()  );
+	}  
+//     try {
+//		response.sendRedirect("AdministradorServlet?action=irContacto&id="+administrador.getId());
+//	} catch (IOException e) {
+//		// TODO Auto-generated catch block
+//		e.printStackTrace();
+//		System.out.println("ERROR MARCOS "+ e.getMessage() + " DEJAR CLARO " + e.hashCode()  );
+//	}
+
+	}
     
     private void irIndexAdministrador(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //        System.out.println("id Admin " + request.getParameter("id"));
@@ -438,7 +518,7 @@ public class AdministradorServlet extends HttpServlet {
         else if ("actualizarAdministrador".equals(action)) {
             
             actualizarAdministrador(request, response);
-        }
+        } 
     }
     
     
@@ -452,7 +532,7 @@ public class AdministradorServlet extends HttpServlet {
         nuevoPaciente.setNombre(request.getParameter("nombre"));
         nuevoPaciente.setApellido1(request.getParameter("apellido1"));
         nuevoPaciente.setApellido2(request.getParameter("apellido2"));
-        nuevoPaciente.setEmail(request.getParameter("email"));
+        nuevoPaciente.setEmail(request.getParameter("email").toLowerCase());
         nuevoPaciente.setTelefono(request.getParameter("telefono"));
         nuevoPaciente.setFechaNacimiento(Date.valueOf(request.getParameter("fechaNacimiento")));
 
@@ -482,7 +562,7 @@ public class AdministradorServlet extends HttpServlet {
         medicoNuevo.setNombre(request.getParameter("nombre"));
         medicoNuevo.setApellido1(request.getParameter("apellido1"));
         medicoNuevo.setApellido2(request.getParameter("apellido2"));
-        medicoNuevo.setEmail(request.getParameter("email"));
+        medicoNuevo.setEmail(request.getParameter("email").toLowerCase());
         medicoNuevo.setTelefono(request.getParameter("telefono"));
         medicoNuevo.setEspecialidad(request.getParameter("especialidad"));
         medicoNuevo.setFechaNacimiento(Date.valueOf(request.getParameter("fechaNacimiento")));
@@ -533,7 +613,7 @@ public class AdministradorServlet extends HttpServlet {
         pacienteNuevo.setNombre(request.getParameter("nombre"));
         pacienteNuevo.setApellido1(request.getParameter("apellido1"));
         pacienteNuevo.setApellido2(request.getParameter("apellido2"));
-        pacienteNuevo.setEmail(request.getParameter("email"));
+        pacienteNuevo.setEmail(request.getParameter("email").toLowerCase());
         pacienteNuevo.setTelefono(request.getParameter("telefono"));
         pacienteNuevo.setFechaNacimiento(Date.valueOf(request.getParameter("fechaNacimiento")));
 
@@ -620,9 +700,12 @@ public class AdministradorServlet extends HttpServlet {
 				pacienteActualizado.setPassword(password);
 				pacienteActualizado.setDni(dni);
 				pacienteActualizado.setNombre(nombre);
+				apellido1=apellido1.substring(0,1).toUpperCase() + apellido1.substring(1).toLowerCase();
+
 				pacienteActualizado.setApellido1(apellido1);
 				pacienteActualizado.setApellido2(apellido2);
-				pacienteActualizado.setEmail(email);
+				String email2=email.toLowerCase();
+				pacienteActualizado.setEmail(email2);
 				pacienteActualizado.setTelefono(telefono);
 				pacienteActualizado.setFechaNacimiento(fechaNacimiento);
 				
@@ -639,7 +722,9 @@ public class AdministradorServlet extends HttpServlet {
 			try {
 						administradorDAO.asignarPermisosPaciente(administrador.getId(),pacienteActualizado.getId());
 				boolean resultado=administradorDAO.actualizarPaciente(administrador.getId(), pacienteActualizado);
-				  response.sendRedirect("AdministradorServlet?action=listarPacientes&id="+administrador.getId());
+//				  response.sendRedirect("AdministradorServlet?action=listarPacientes&id="+administrador.getId());
+	            response.sendRedirect("AdministradorServlet?action=irEditarPaciente&idPaciente="+pacienteActualizado.getId()+"&idAdministrador="+administrador.getId());
+
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -683,7 +768,11 @@ public class AdministradorServlet extends HttpServlet {
 				medicoActualizado.setNombre(nombre);
 				medicoActualizado.setApellido1(apellido1);
 				medicoActualizado.setApellido2(apellido2);
-				medicoActualizado.setEmail(email);
+				
+//				medicoActualizado.setEmail(email);
+//				String email2=medicoActualizado.getEmail();
+				String email2=email.toLowerCase();
+				medicoActualizado.setEmail(email2);
 				medicoActualizado.setTelefono(telefono);
 				medicoActualizado.setFechaNacimiento(fechaNacimiento);
 				medicoActualizado.setEspecialidad(especialidad);
@@ -704,8 +793,10 @@ public class AdministradorServlet extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-	            response.sendRedirect("AdministradorServlet?action=listarMedicos&id="+administrador.getId());
+
+//	            response.sendRedirect("AdministradorServlet?action=listarMedicos&id="+administrador.getId());
+            response.sendRedirect("AdministradorServlet?action=irEditarMedico&idMedico="+medicoActualizado.getId()+"&idAdministrador="+administrador.getId());
+
     } 
     
     
@@ -738,14 +829,17 @@ public class AdministradorServlet extends HttpServlet {
 				administradorActualizado.setNombre(nombre);
 				administradorActualizado.setApellido1(apellido1);
 				administradorActualizado.setApellido2(apellido2);
-				administradorActualizado.setEmail(email);
+				String email2=email.toLowerCase();
+				administradorActualizado.setEmail(email2);
 				administradorActualizado.setTelefono(telefono);
 				administradorActualizado.setFechaNacimiento(fechaNacimiento);
 
 						
 				
 					administradorDAO.actualizarAdministrador(administradorActualizado);
-		            response.sendRedirect("AdministradorServlet?action=irIndexAdministrador&id="+administradorActualizado.getId());
+//		            response.sendRedirect("AdministradorServlet?action=irEditarAdministrador&id="+administradorActualizado.getId());
+		            response.sendRedirect("AdministradorServlet?action=irEditarAdministrador&idAdministrador="+administradorActualizado.getId());
+
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

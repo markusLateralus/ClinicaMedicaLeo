@@ -38,7 +38,7 @@ String tipoUsuario = (String) session.getAttribute("tipoUsuario");
     <ul class="menu">
         <li><a href="ConsultarCitaServlet?action=irSolicitarCita&id=<%=paciente.getId()  %>">Consultar especialistas</a></li>
              
-                <li><a href="RealizarReservaServlet?action=mostrarNotificaciones&idPaciente=<%=paciente.getId()  %>" >Consultar notificaciones</a></li>
+       <li><a href="RealizarReservaServlet?action=mostrarCitasPaciente&idPaciente=<%=paciente.getId()  %>" >Consultar citas</a></li>
         <!-- Submenú de Datos personales -->
  
         <li>
@@ -101,16 +101,25 @@ String tipoUsuario = (String) session.getAttribute("tipoUsuario");
         </form>
     </div>
 
-    <div class="divRegresar">
-        <a href="ConsultarCitaServlet?action=irSolicitarCita&id=<%= paciente.getId() %>">Regresar</a>
-    </div>
+          <form  action="PacienteServlet" method="get" >
+                    <div class="form-group">
+        <input type="hidden" name="action" value="irIndexPaciente">
+            </div>
+              <div class="form-group">
+         <input type="hidden" name="id"value="<%= paciente.getId() %>" />
+         </div>
+            <div class="divRegresar">
+                	<button  type="submit" id="enviar" class="divRegresar">volver</button>
+                	</div>
+                </form>
 </main>
 
 	<footer class="footer">
 		<div class="footer-container">
 			<div class="footer-left">
-				<a href="#contacto">Contacto</a> <a href="#aviso-legal">Aviso
-					Legal</a> <a href="#politicas-privacidad">Políticas de Privacidad</a>
+					<a href="PacienteServlet?action=irContacto&id=<%=paciente.getId()%>">Contacto</a> 
+					<a href="PacienteServlet?action=irAvisoLegal&id=<%=paciente.getId()%>">Aviso Legal</a>
+				 <a href="PacienteServlet?action=irPoliticaPrivacidad&id=<%=paciente.getId()%>">Políticas de Privacidad</a>
 			</div>
 			<div class="footer-right">
 				<a href="https://www.facebook.com" target="_blank"><img

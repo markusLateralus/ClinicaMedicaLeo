@@ -1,8 +1,11 @@
 package servlets;
 
+import dao.AdministradorDAO;
+import dao.HorarioDAO;
 import dao.MedicoDAO;
 import dao.NotificacionDAO;
 import dao.PacienteDAO;
+import modelos.Administrador;
 import modelos.Horario;
 import modelos.Medico;
 import modelos.Notificacion;
@@ -28,13 +31,14 @@ public class PacienteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private PacienteDAO pacienteDAO;
 	private NotificacionDAO notificacionDAO;
-
+	private HorarioDAO horarioDAO;
     public void init() throws ServletException {
     	
         try {
 //        	 System.out.println("abriendo pacienteServlet");
             pacienteDAO = new PacienteDAO();
             notificacionDAO=new NotificacionDAO();
+            horarioDAO=new HorarioDAO();
            
         } catch (Exception e) {
             throw new ServletException(e);
@@ -55,29 +59,135 @@ public class PacienteServlet extends HttpServlet {
         }else if("irIndexPaciente".equals(action)) {
     		this.irIndexPaciente(request,response);
     	}else if ("eliminarMensaje".equals(action)) {
-    		this.eliminarMensaje(request,response);
-    	}
-    }
-    private void eliminarMensaje(HttpServletRequest request, HttpServletResponse response) {
-            int indice = Integer.parseInt(request.getParameter("indice"));
-
-            HttpSession session = request.getSession();
-            List<String> mensajesPaciente = (List<String>) session.getAttribute("mensajesPaciente");
-
-            if (mensajesPaciente != null && indice >= 0 && indice < mensajesPaciente.size()) {
-                mensajesPaciente.remove(indice);
-                session.setAttribute("mensajesPaciente", mensajesPaciente);
-            }
-
-            try {
-				response.sendRedirect("./paciente/indexPaciente.jsp");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//    		this.eliminarMensaje(request,response);
+    	}  else if ("irContacto".equals(action)) {
+        	
+        	irContacto(request, response);
+        }  else if ("irAvisoLegal".equals(action)) {
+        	
+        	irAvisoLegal(request, response);
+        }  else if ("irPoliticaPrivacidad".equals(action)) {
+        	
+        	irPoliticaPrivacidad(request, response);
         }
+    }
+    
+    
+    private void irPoliticaPrivacidad(HttpServletRequest request, HttpServletResponse response) {
+//      System.out.println("id Admin " + request.getParameter("id"));
+   	int idPaciente = Integer.parseInt(request.getParameter("id"));
+      Paciente paciente=null;
+ 		try {
+// 			medicoDAO = new MedicoDAO();
+ 			pacienteDAO=new PacienteDAO();
+ 			 paciente=pacienteDAO.getPacienteById(idPaciente);
+ 			request.setAttribute("paciente",paciente);
+ 		} catch (Exception e) {
+ 			e.printStackTrace();
+ 		}
+
+    RequestDispatcher dispatcher = request.getRequestDispatcher("PoliticaPrivacidad.jsp");
+    try {
+		dispatcher.forward(request, response);
+	} catch (ServletException | IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		System.out.println("ERROR MARCOS "+ e.getMessage() + " DEJAR CLARO " + e.hashCode()  );
+	} 
 		
-	
+	}
+
+	private void irAvisoLegal(HttpServletRequest request, HttpServletResponse response) {
+//      System.out.println("id Admin " + request.getParameter("id"));
+   	int idPaciente = Integer.parseInt(request.getParameter("id"));
+      Paciente paciente=null;
+ 		try {
+// 			medicoDAO = new MedicoDAO();
+ 			pacienteDAO=new PacienteDAO();
+ 			 paciente=pacienteDAO.getPacienteById(idPaciente);
+ 			request.setAttribute("paciente",paciente);
+ 		} catch (Exception e) {
+ 			e.printStackTrace();
+ 		}
+
+    RequestDispatcher dispatcher = request.getRequestDispatcher("AvisoLegal.jsp");
+    try {
+		dispatcher.forward(request, response);
+	} catch (ServletException | IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		System.out.println("ERROR MARCOS "+ e.getMessage() + " DEJAR CLARO " + e.hashCode()  );
+	} 
+		
+	}
+
+	private void irContacto(HttpServletRequest request, HttpServletResponse response)  {
+//      System.out.println("id Admin " + request.getParameter("id"));
+   	int idPaciente = Integer.parseInt(request.getParameter("id"));
+      Paciente paciente=null;
+ 		try {
+// 			medicoDAO = new MedicoDAO();
+ 			pacienteDAO=new PacienteDAO();
+ 			 paciente=pacienteDAO.getPacienteById(idPaciente);
+ 			request.setAttribute("paciente",paciente);
+ 		} catch (Exception e) {
+ 			e.printStackTrace();
+ 		}
+
+    RequestDispatcher dispatcher = request.getRequestDispatcher("Contacto.jsp");
+    try {
+		dispatcher.forward(request, response);
+	} catch (ServletException | IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		System.out.println("ERROR MARCOS "+ e.getMessage() + " DEJAR CLARO " + e.hashCode()  );
+	} 
+}
+    
+    
+    
+    private void cancelarCitaPaciente(HttpServletRequest request, HttpServletResponse response) {
+        int idHorario = Integer.parseInt(request.getParameter("idHorario"));
+       int idMedico = Integer.parseInt(request.getParameter("idMedico"));
+        int idPaciente = Integer.parseInt(request.getParameter("idPaciente"));
+        
+
+        try {
+            boolean citaCancelada = horarioDAO.cancelarCita(idHorario, idMedico, idPaciente);
+            if (citaCancelada) {
+                // Redirigir con un mensaje de éxito
+                request.setAttribute("mensaje", "Cita cancelada correctamente.");
+            } else {
+                request.setAttribute("mensaje", "Error al cancelar la cita.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("mensaje", "Ocurrió un error inesperado.");
+        }
+        
+        //ELIMINAMOS LA NOTIFICACION
+//        try {
+//			notificacionDAO.eliminarNotificacion(idMedico);
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+
+        
+        
+        
+        try {
+//			request.getRequestDispatcher("./paciente/notificacionesPaciente.jsp").forward(request, response);
+            response.sendRedirect("RealizarReservaServlet?action=mostrarNotificacionesPaciente&idPaciente="+idPaciente);
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    
+
+		
+	}
 
 	private void irIndexPaciente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("id medico " + request.getParameter("id"));
@@ -144,7 +254,9 @@ public class PacienteServlet extends HttpServlet {
         } else if ("actualizarPaciente".equals(action)) {
        
             actualizarPaciente(request, response);
-        }
+        }else if("cancelarCitaPaciente".equals(action)){
+    		this.cancelarCitaPaciente(request,response);
+    	}
     }
     
     
@@ -175,7 +287,10 @@ public class PacienteServlet extends HttpServlet {
 
         try {
             pacienteDAO.insertarPaciente(nuevoPaciente);
-            response.sendRedirect("PacienteServlet?action=listarPacientes");
+//            response.sendRedirect("LoginServlet");
+            // Volver al formulario de login con el error
+            request.getSession().setAttribute("paciente", nuevoPaciente);
+            request.getRequestDispatcher("Login.jsp").forward(request, response);
         } catch (SQLException e) {
             throw new ServletException(e);
         }
@@ -205,19 +320,20 @@ public class PacienteServlet extends HttpServlet {
 				pacienteActualizado.setNombre(nombre);
 				pacienteActualizado.setApellido1(apellido1);
 				pacienteActualizado.setApellido2(apellido2);
-				pacienteActualizado.setEmail(email);
+				String email2=email.toLowerCase();
+				pacienteActualizado.setEmail(email2);
 				pacienteActualizado.setTelefono(telefono);
 				pacienteActualizado.setFechaNacimiento(fechaNacimiento);
-				System.out.println("id " + pacienteActualizado.getId());
-				System.out.println("username " + pacienteActualizado.getUsername());
-				System.out.println("pass " + pacienteActualizado.getPassword());
-				System.out.println("dni " + pacienteActualizado.getDni());
-				System.out.println("nombre " + pacienteActualizado.getNombre());
-				System.out.println("apellido1 " + pacienteActualizado.getApellido1());
-				System.out.println("ape2 " + pacienteActualizado.getApellido2());
-				System.out.println("email " + pacienteActualizado.getEmail());
-				System.out.println("telefon" + pacienteActualizado.getTelefono());
-				System.out.println("fecha " + pacienteActualizado.getFechaNacimiento());
+//				System.out.println("id " + pacienteActualizado.getId());
+//				System.out.println("username " + pacienteActualizado.getUsername());
+//				System.out.println("pass " + pacienteActualizado.getPassword());
+//				System.out.println("dni " + pacienteActualizado.getDni());
+//				System.out.println("nombre " + pacienteActualizado.getNombre());
+//				System.out.println("apellido1 " + pacienteActualizado.getApellido1());
+//				System.out.println("ape2 " + pacienteActualizado.getApellido2());
+//				System.out.println("email " + pacienteActualizado.getEmail());
+//				System.out.println("telefon" + pacienteActualizado.getTelefono());
+//				System.out.println("fecha " + pacienteActualizado.getFechaNacimiento());
 						
 				
 				   pacienteDAO.actualizarPaciente(pacienteActualizado);

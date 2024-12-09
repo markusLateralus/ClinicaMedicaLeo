@@ -112,9 +112,17 @@ String tipoUsuario = (String) session.getAttribute("tipoUsuario");
   
 
 
+            <form  action="AdministradorServlet" method="get" >
+                    <div class="form-group">
+        <input type="hidden" name="action" value="irIndexAdministrador">
+            </div>
+              <div class="form-group">
+         <input type="hidden" name="id"value="<%= administrador.getId() %>" />
+         </div>
             <div class="divRegresar">
-        	<a id="botonRegresar" >Regresar</a>
-    </div>
+                	<button  type="submit" id="enviar" class="divRegresar">volver</button>
+                	</div>
+                </form>
         
 
    
@@ -125,8 +133,8 @@ String tipoUsuario = (String) session.getAttribute("tipoUsuario");
 	<footer class="footer">
 		<div class="footer-container">
 			<div class="footer-left">
-				<a href="#contacto">Contacto</a> <a href="#aviso-legal">Aviso
-					Legal</a> <a href="#politicas-privacidad">Políticas de Privacidad</a>
+						<a href="AdministradorServlet?action=irAvisoLegal&id=<%=administrador.getId()%>">Aviso Legal</a>
+				 <a href="AdministradorServlet?action=irPoliticaPrivacidad&id=<%=administrador.getId()%>">Políticas de Privacidad</a>
 			</div>
 			<div class="footer-right">
 				<a href="https://www.facebook.com" target="_blank"><img

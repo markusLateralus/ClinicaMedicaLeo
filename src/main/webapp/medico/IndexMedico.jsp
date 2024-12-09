@@ -2,14 +2,16 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="modelos.Medico" %>
+<%@ page import="modelos.Paciente" %>
 <%@ page import="modelos.Horario" %>
+<%@ page import="modelos.Notificacion" %>
 <%@ page import="dao.MedicoDAO" %>
 <%@ page import="modelos.Administrador" %>
 <%@ page import="dao.AdministradorDAO" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>Indiex del medico</title>
+    <title>Index del medico</title>
     <link rel="stylesheet" type="text/css" href="css/indexMedico.css">
     <style>
     .disponible { background-color: green; color: white; font-size:20px;}
@@ -18,6 +20,7 @@
 </head>
 <%
 Medico medico=(Medico) request.getAttribute("medico");
+Paciente paciente= (Paciente) request.getAttribute("paciente");
 String tipoUsuario = (String) session.getAttribute("tipoUsuario");
 %>
 <body>
@@ -36,6 +39,8 @@ String tipoUsuario = (String) session.getAttribute("tipoUsuario");
     <ul class="menu">
         <li><a href="MedicoServlet?action=irIndexMedico&id=<%=medico.getId()%>">Consultar horario semanal</a></li>
         <!-- Submenú de Datos personales -->
+                       <li><a href="RealizarReservaServlet?action=mostrarCitasMedico&idMedico=<%=medico.getId()  %>" >Consultar Citas</a></li>
+        
         <li>
             <a href="#">Datos Personales</a>
             <ul class="submenu">
@@ -54,24 +59,43 @@ String tipoUsuario = (String) session.getAttribute("tipoUsuario");
 <br><br>
 
 <main>
+ 	
+	 <div class="expliacionPagina">
+	<p>Desde aquí puedes consultar tus notificaciones de reserva de cita</p>
+</div>
+<% 
+ArrayList<Notificacion> notificaciones= (ArrayList<Notificacion>) request.getAttribute("notificaciones");
+if (notificaciones != null && !notificaciones.isEmpty()) {
+%>
+
+<div class="mensajes-container">
+    <h3>Notificaciones</h3>
+    <ul>
+        <% for (int i = 0; i < notificaciones.size(); i++) { %>
+           
+             <% if (notificaciones.get(i).getMensajeMedico().length()>1){%>
+              <li>
+                <%=notificaciones.get(i).getMensajeMedico()%>
+                <a href="NotificacionServlet?action=eliminarNotificacionMedico&id=<%=notificaciones.get(i).getId() %>&idMedico=<%=medico.getId()%>" class="eliminar-notificacion">Eliminar</a>
+         </li>
+<% } %>
+   
+        <% } %>
+    </ul>
+</div>
 <%
-
-
-String medicoId=(String) request.getParameter("id");
-
-// Controlar acceso a la lista de pacientes
-if (tipoUsuario == null) {
-    // Si el usuario no está logado, redirigir al login
-    response.sendRedirect("Login.jsp");
-    return;
 }
-    // Si es Médico o Administrador, puede ver la lista
-	 %>
-	
+%> 
 	 
 	 
-<%if ( tipoUsuario.equals("MEDICO")){ %>	 
 	 
+	 
+	 
+	 
+	 
+	 
+
+	<br><br><br><br> 
 
 <h2>Horario de la semana</h2>
 <table border="1">
@@ -101,7 +125,8 @@ if (tipoUsuario == null) {
                     for (Horario horario : horarios) {%>
                  
                           <% 
-                        if (horario.getDia().equals(dia) && horario.getHora().equals(hora + ":00:00")) {
+                          if (horario.getDia().equals(dia) && horario.getHora().equals(hora + ":00:00") ||
+                                  horario.getDia().equals(dia) && horario.getHora().equals("0"+hora + ":00:00")) {
                 
                             esDisponible = "disponible".equals(horario.getEstado());
                             horarioId = horario.getId();
@@ -142,7 +167,7 @@ if (tipoUsuario == null) {
             %>
         </tr>
     <% 
-        }} // Fin del for de horas
+        }// Fin del for de horas
     %>
 </table>
       
@@ -152,8 +177,8 @@ if (tipoUsuario == null) {
 	<footer class="footer">
 		<div class="footer-container">
 			<div class="footer-left">
-				<a href="#contacto">Contacto</a> <a href="#aviso-legal">Aviso
-					Legal</a> <a href="#politicas-privacidad">Políticas de Privacidad</a>
+							<a href="MedicoServlet?action=irAvisoLegal&id=<%=medico.getId()%>">Aviso Legal</a>
+				 <a href="MedicoServlet?action=irPoliticaPrivacidad&id=<%=medico.getId()%>">Políticas de Privacidad</a>
 			</div>
 			<div class="footer-right">
 				<a href="https://www.facebook.com" target="_blank"><img

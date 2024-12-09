@@ -7,15 +7,17 @@ public class Notificacion {
     private int id;
     private int idPaciente;
     private int idMedico;
-    private String mensaje;
+    private String mensajePaciente;
+    private String mensajeMedico;
     private String estado; // "activo" o "inactivo"
     private Timestamp fechaCreacion;
-	public Notificacion(int id, int idPaciente, int idMedico, String mensaje, String estado, Timestamp fechaCreacion) {
+	public Notificacion(int id, int idPaciente, int idMedico, String mensajePaciente,String mensajeMedico, String estado, Timestamp fechaCreacion) {
 		super();
 		this.id = id;
 		this.idPaciente = idPaciente;
 		this.idMedico = idMedico;
-		this.mensaje = mensaje;
+		this.mensajePaciente = mensajePaciente;
+		this.mensajeMedico=mensajeMedico;
 		this.estado = estado;
 		this.fechaCreacion = fechaCreacion;
 	}
@@ -40,11 +42,17 @@ public class Notificacion {
 	public void setIdMedico(int idMedico) {
 		this.idMedico = idMedico;
 	}
-	public String getMensaje() {
-		return mensaje;
+	public String getMensajePaciente() {
+		return mensajePaciente;
 	}
-	public void setMensaje(String mensaje) {
-		this.mensaje = mensaje;
+	public void setMensajePaciente(String mensaje) {
+		this.mensajePaciente = mensaje;
+	}
+	public String getMensajeMedico() {
+		return mensajeMedico;
+	}
+	public void setMensajeMedico(String mensaje) {
+		this.mensajeMedico = mensaje;
 	}
 	public String getEstado() {
 		return estado;

@@ -13,7 +13,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import modelos.Notificacion;
-import modelos.Rol;
+
 
 public class NotificacionDAO {
 
@@ -28,15 +28,18 @@ public class NotificacionDAO {
 
     
     public void insertarNotificacion(Notificacion notificacion) throws SQLException {
-        String sql = "INSERT INTO notificaciones (id_paciente, id_medico, mensaje, estado) VALUES (?, ?, ?, ?)";
+        System.out.println("insertar NOTIFICIACION DESDE LA BASE DE DATOS!");
+
+        String sql = "INSERT INTO notificaciones (id_paciente, id_medico, mensajePaciente,mensajeMedico, estado) VALUES (?, ?,?, ?, ?)";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1,notificacion.getIdPaciente());
             stmt.setInt(2,notificacion.getIdMedico());
-            stmt.setString(3, notificacion.getMensaje());
-            stmt.setString(4, notificacion.getEstado());
+            stmt.setString(3, notificacion.getMensajePaciente());
+            stmt.setString(4, notificacion.getMensajeMedico());
+            stmt.setString(5, notificacion.getEstado());
             stmt.executeUpdate();
-            System.out.println("insertado correctamente en la tabla Notificacion:"+ notificacion.getMensaje());
+            System.out.println("insertado correctamente en la tabla Notificacion:"+ notificacion.getMensajePaciente());
         }
     }
 
@@ -53,7 +56,8 @@ public class NotificacionDAO {
                 notificacion.setId(rs.getInt("id"));
                 notificacion.setIdPaciente(rs.getInt("id_paciente"));
                 notificacion.setIdMedico(rs.getInt("id_medico"));
-                notificacion.setMensaje(rs.getString("mensaje"));
+                notificacion.setMensajePaciente(rs.getString("mensajePaciente"));
+                notificacion.setMensajeMedico(rs.getString("mensajeMedico"));
                 notificacion.setEstado(rs.getString("estado"));
                 notificacion.setFechaCreacion(rs.getTimestamp("fecha_creacion"));
                 notificaciones.add(notificacion);
@@ -61,8 +65,31 @@ public class NotificacionDAO {
         }
         return notificaciones;
     }
+    public void marcarNotificacionComoInactivaParaPaciente(int idNotificacion)  {
+        String sql = "UPDATE notificaciones SET mensajePaciente = '' WHERE id = ?";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idNotificacion);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
 
-    public void marcarNotificacionComoInactiva(int idNotificacion)  {
+    public void marcarNotificacionComoInactivaParaMedico(int idNotificacion)  {
+        String sql = "UPDATE notificaciones SET mensajeMedico = '' WHERE id = ?";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idNotificacion);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+    public void marcarNotificacionComoInactiva2(int idNotificacion)  {
         String sql = "UPDATE notificaciones SET estado = 'inactivo' WHERE id = ?";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -86,8 +113,9 @@ public class NotificacionDAO {
                 Notificacion notificacion = new Notificacion();
                 notificacion.setId(rs.getInt("id"));
                 notificacion.setIdPaciente(rs.getInt("id_paciente"));
-                notificacion.setIdMedico(rs.getInt("id_medio"));
-                notificacion.setMensaje(rs.getString("mensaje"));
+                notificacion.setIdMedico(rs.getInt("id_medico"));
+                notificacion.setMensajePaciente(rs.getString("mensajePaciente"));
+                notificacion.setMensajeMedico(rs.getString("mensajeMedico"));
                 notificacion.setEstado(rs.getString("estado"));
                 notificacion.setFechaCreacion(rs.getTimestamp("fecha_creacion"));
                 notificaciones.add(notificacion);
@@ -98,5 +126,17 @@ public class NotificacionDAO {
 		}
         return notificaciones;
     }
+
+
+	public boolean eliminarNotificacion(int idMedico) throws SQLException {
+    String query = "DELETE FROM notificaciones WHERE id_medico = ?";
+    try (Connection conn = dataSource.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(query)) {
+        stmt.setInt(1, idMedico);
+        int rowsAffected = stmt.executeUpdate();
+        return rowsAffected > 0;
+    }
+}
+
 }
 

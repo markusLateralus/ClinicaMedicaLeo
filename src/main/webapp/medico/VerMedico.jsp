@@ -10,11 +10,7 @@
 <meta charset="UTF-8">
 <title>Ver datos del Médico</title>
 <link rel="stylesheet" type="text/css" href="./css/VerMedico.css">
-<script>
-function regresar() {
-    window.history.back();
-}
-</script>
+
 </head>
 <% 
 // Obtener la acción del parámetro
@@ -40,6 +36,8 @@ String tipoUsuario = (String) session.getAttribute("tipoUsuario");
 <nav>
     <ul class="menu">
         <li><a href="MedicoServlet?action=irIndexMedico&id=<%=medico.getId()%>">Consultar horario semanal</a></li>
+                       <li><a href="RealizarReservaServlet?action=mostrarCitasMedico&idMedico=<%=medico.getId()  %>" >Consultar Citas</a></li>
+      
         <li>
             <a href="#">Datos Personales</a>
             <ul class="submenu">
@@ -107,9 +105,19 @@ String tipoUsuario = (String) session.getAttribute("tipoUsuario");
         </form>
     </div>
 
-    <div class="divRegresar">
-        <a href="MedicoServlet?action=irIndexMedico&id=<%= medico.getId() %>">Regresar</a>
-    </div>
+          <form  action="MedicoServlet" method="get" >
+                    <div class="form-group">
+        <input type="hidden" name="action" value="irIndexMedico">
+            </div>
+              <div class="form-group">
+         <input type="hidden" name="id"value="<%= medico.getId() %>" />
+         </div>
+            <div class="divRegresar">
+                	<button  type="submit" id="enviar" class="divRegresar">volver</button>
+                	</div>
+                </form>
+        
+ 
  
  </main>
  
@@ -120,8 +128,8 @@ String tipoUsuario = (String) session.getAttribute("tipoUsuario");
 	<footer class="footer">
 		<div class="footer-container">
 			<div class="footer-left">
-				<a href="#contacto">Contacto</a> <a href="#aviso-legal">Aviso
-					Legal</a> <a href="#politicas-privacidad">Políticas de Privacidad</a>
+				<a href="MedicoServlet?action=irAvisoLegal&id=<%=medico.getId()%>">Aviso Legal</a>
+				 <a href="MedicoServlet?action=irPoliticaPrivacidad&id=<%=medico.getId()%>">Políticas de Privacidad</a>
 			</div>
 			<div class="footer-right">
 				<a href="https://www.facebook.com" target="_blank"><img
@@ -138,5 +146,5 @@ String tipoUsuario = (String) session.getAttribute("tipoUsuario");
 
 	</footer>
 </body>
-  <script src="./administrador/Redirecciones.js"></script>
+
 </html>

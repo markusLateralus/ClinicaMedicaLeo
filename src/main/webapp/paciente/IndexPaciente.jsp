@@ -35,8 +35,8 @@ String tipoUsuario = (String) session.getAttribute("tipoUsuario");
     <ul class="menu">
         <li><a href="ConsultarCitaServlet?action=irSolicitarCita&id=<%=paciente.getId()  %>" >Consultar especialistas</a></li>
         <!-- Submenú de Datos personales -->
-   
-                <li><a href="RealizarReservaServlet?action=mostrarNotificaciones&idPaciente=<%=paciente.getId()  %>" >Consultar notificaciones</a></li>
+       <li><a href="RealizarReservaServlet?action=mostrarCitasPaciente&idPaciente=<%=paciente.getId()  %>" >Consultar citas</a></li>
+       
         <!-- Submenú de Datos personales -->
         <li>
             <a href="#">Datos Personales</a>
@@ -55,20 +55,29 @@ String tipoUsuario = (String) session.getAttribute("tipoUsuario");
 <br>
 
 <main>
+ <div class="expliacionPagina">
 <p>BIENVENIDO <%= paciente.getNombre() %></p>
-<p>Cita médica Reservada</p>
+
+<p>Desde aquí puedes consultar tus notificaciones de reserva de cita</p>
+</div>
 <% 
-List<Notificacion> mensajesPaciente = (List<Notificacion>) session.getAttribute("mensajesPaciente");
-if (mensajesPaciente != null && !mensajesPaciente.isEmpty()) {
+ArrayList<Notificacion> notificaciones= (ArrayList<Notificacion>) request.getAttribute("notificaciones");
+if (notificaciones != null && !notificaciones.isEmpty()) {
 %>
 <div class="mensajes-container">
     <h3>Notificaciones</h3>
     <ul>
-        <% for (int i = 0; i < mensajesPaciente.size(); i++) { %>
-            <li>
-                <%= mensajesPaciente.get(i).getMensaje() %>
-                <button class="btn-eliminar" onclick="eliminarMensaje(<%= i %>)">x</button>
-            </li>
+        <% for (int i = 0; i < notificaciones.size(); i++) { %>
+            
+            <% if (notificaciones.get(i).getMensajePaciente().length()>1){%>
+               <li>
+                <%=notificaciones.get(i).getMensajePaciente()%>
+             
+                <a href="NotificacionServlet?action=eliminarNotificacionPaciente&id=<%=notificaciones.get(i).getId() %>&idPaciente=<%=paciente.getId()%>" class="eliminar-notificacion">Desactivar</a>
+   </li>
+<%} %>
+
+         
         <% } %>
     </ul>
 </div>
@@ -86,17 +95,39 @@ function eliminarMensaje(indice) {
     }
 }
 </script>
+<br><br>
+ <div class="expliacionPagina">
 
+<p>Nuestras instalaciones</p>
+</div>
+    <!-- Slider -->
+    <div class="slider">
+        <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
+        <div class="slides">
+            <img src="imagenes/ClinicaLeo2.png" alt="Logo de Clínica LEO" class="slide">
+            <img src="imagenes/salaDeEspera.png" alt="sala de espera" class="slide">
+            <img src="imagenes/salaDeEsperaPediatria.png" alt="sala de espera Pediatría" class="slide">
+            <img src="imagenes/salaDeEsperaPsiquiatria.png" alt="sala de espera Psiquiatria" class="slide">
+             <img src="imagenes/exteriores1.png" alt="exteriores" class="slide">
+            <img src="imagenes/aparcamiento.png" alt="aparcamientos" class="slide">
+              <img src="imagenes/recepcion.png" alt="recepcion" class="slide">
+        </div>
+        <button class="next" onclick="moveSlide(1)">&#10095;</button>
+    </div>
+    
+    
+
+    
 </main>
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
+
 	<footer class="footer">
 		<div class="footer-container">
 			<div class="footer-left">
-				<a href="#contacto">Contacto</a> <a href="#aviso-legal">Aviso
-					Legal</a> <a href="#politicas-privacidad">Políticas de Privacidad</a>
+					<a href="PacienteServlet?action=irContacto&id=<%=paciente.getId()%>">Contacto</a> 
+				<a href="PacienteServlet?action=irAvisoLegal&id=<%=paciente.getId()%>">Aviso Legal</a>
+				 <a href="PacienteServlet?action=irPoliticaPrivacidad&id=<%=paciente.getId()%>">Políticas de Privacidad</a>
 			</div>
 			<div class="footer-right">
 				<a href="https://www.facebook.com" target="_blank"><img
@@ -113,5 +144,5 @@ function eliminarMensaje(indice) {
 
 	</footer>
 </body>
-
+<script src="js/slider.js"></script>
 </html>

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import modelos.Paciente;
-import modelos.Rol;
+
 import modelos.Administrador;
 import modelos.Horario;
 
@@ -21,7 +21,7 @@ public class PacienteDAO {
         Context initContext = new InitialContext();
         Context envContext  = (Context)initContext.lookup("java:/comp/env");
         dataSource = (DataSource)envContext.lookup("jdbc/clinicaMedica");
-        System.out.println("abriendo base de datos paciente");
+//        System.out.println("abriendo base de datos paciente");
     }
     
     

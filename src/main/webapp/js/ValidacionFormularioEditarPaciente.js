@@ -26,16 +26,18 @@ var botonEnviar=document.getElementById("enviar");
 function validarUserName(){
     //validamos campo Nombre
         var esValido=false;
-        var nombre=campoUserName.value;
-        var totalVocales=nombre.match(/[aeiou]/gi);
-        if(nombre ==null ||  nombre == "" || nombre.length<2 || nombre.length>10 ||totalVocales<1 ){
+        var userName=campoUserName.value.trim();
+        var totalVocales=userName.match(/[aeiouáéíóúü]/gi);
+        if(userName ==null ||  userName == "" || userName.length<4 || userName.length>10 ||totalVocales<1 ){
       //agregamos una css al campo para ponerlo rojo
             campoUserName.className="camposConError";
-           let mensajeError="Mínimo 2 letras, máximo 10 y una vocal obligatoria";
+           let mensajeError="Mínimo 4 letras, máximo 10 y una vocal obligatoria";
            //agregamos un texto en el parrafo con el mensaje de error
            errorUserName.innerHTML=mensajeError;
            return esValido;
         }else{
+			userName=userName.toLowerCase();
+			campoUserName.value=userName;
             campoUserName.classList.remove('camposConError');
             errorUserName.innerHTML="";
             esValido=true;
@@ -49,10 +51,10 @@ function validarPassword(){
 	    var esValido=false;
 	    var nombre=campoPassword.value;
 	    var totalVocales=nombre.match(/[aeiou]/gi);
-	    if(nombre ==null ||  nombre == "" || nombre.length<2 || nombre.length>20 ||totalVocales<1 ){
+	    if(nombre ==null ||  nombre == "" || nombre.length<4 || nombre.length>20 ||totalVocales<1 ){
 	  //agregamos una css al campo para ponerlo rojo
 	        campoPassword.className="camposConError";
-	       let mensajeError="Mínimo 2 letras, máximo 20 y una vocal obligatoria";
+	       let mensajeError="Mínimo 4 letras, máximo 20 y una vocal obligatoria";
 	       //agregamos un texto en el parrafo con el mensaje de error
 	       errorPassword.innerHTML=mensajeError;
 	       return esValido;
@@ -106,15 +108,19 @@ function validarNombre(){
     //validamos campo Nombre
         var esValido=false;
         var nombre=campoNombre.value;
-        var totalVocales=nombre.match(/[aeiou]/gi);
-        if(nombre ==null ||  nombre == "" || nombre.length<2 || nombre.length>25 ||totalVocales<1 ){
+        var totalVocales=nombre.match(/[aeiouáéíóúü]/gi);
+        if(nombre ==null ||  nombre == "" || nombre.length<4 || nombre.length>25 ||totalVocales<1 ){
       //agregamos una css al campo para ponerlo rojo
             campoNombre.className="camposConError";
-           let mensajeError="Mínimo 2 letras, máximo 25 y una vocal obligatoria";
+           let mensajeError="Mínimo 4 letras, máximo 25 y una vocal obligatoria";
            //agregamos un texto en el parrafo con el mensaje de error
            errorNombre.innerHTML=mensajeError;
            return esValido;
         }else{
+			// Formateamos el nombre (Primera letra en mayúscula, resto en minúsculas)
+			    nombre = nombre.charAt(0).toUpperCase() + nombre.slice(1).toLowerCase();
+			    // Actualizamos el campo con el valor formateado
+			    campoNombre.value = nombre;
             campoNombre.classList.remove('camposConError');
             errorNombre.innerHTML="";
             esValido=true;
@@ -130,16 +136,20 @@ function validarNombre(){
 function validarApellido1(){
 	//validamos campo Nombre
 	    var esValido=false;
-	    var nombre=campoApellido1.value;
-	    var totalVocales=nombre.match(/[aeiou]/gi);
-	    if(nombre ==null ||  nombre == "" || nombre.length<2 || nombre.length>20 ||totalVocales<1 ){
+	    var apellido1=campoApellido1.value.trim();
+	    var totalVocales=apellido1.match(/[aeiouáéíóúü]/gi);
+	    if(apellido1 ==null ||  apellido1 == "" || apellido1.length<4 || apellido1.length>20 ||totalVocales<1 ){
 	  //agregamos una css al campo para ponerlo rojo
 	        campoApellido1.className="camposConError";
-	       let mensajeError="Mínimo 2 letras, máximo 20 y una vocal obligatoria";
+	       let mensajeError="Mínimo 4 letras, máximo 20 y una vocal obligatoria";
 	       //agregamos un texto en el parrafo con el mensaje de error
 	       errorApellido1.innerHTML=mensajeError;
 	       return esValido;
 	    }else{
+			// Formateamos el nombre (Primera letra en mayúscula, resto en minúsculas)
+				    apellido1 = apellido1.charAt(0).toUpperCase() + apellido1.slice(1).toLowerCase();
+				    // Actualizamos el campo con el valor formateado
+				    campoApellido1.value = apellido1;
 	        campoApellido1.classList.remove('camposConError');
 	        errorApellido1.innerHTML="";
 	        esValido=true;
@@ -150,16 +160,20 @@ function validarApellido1(){
 function validarApellido2(){
 	//validamos campo Nombre
 	    var esValido=false;
-	    var nombre=campoApellido2.value;
-	    var totalVocales=nombre.match(/[aeiou]/gi);
-	    if(nombre ==null ||  nombre == "" || nombre.length<2 || nombre.length>20 ||totalVocales<1 ){
+	    var apellido2=campoApellido2.value.trim();
+	    var totalVocales=apellido2.match(/[aeiouáéíóúü]/gi);
+	    if(apellido2 ==null ||  apellido2 == "" || apellido2.length<4 || apellido2.length>20 ||totalVocales<1 ){
 	  //agregamos una css al campo para ponerlo rojo
 	        campoApellido2.className="camposConError";
-	       let mensajeError="Mínimo 2 letras, máximo 20 y una vocal obligatoria";
+	       let mensajeError="Mínimo 4 letras, máximo 20 y una vocal obligatoria";
 	       //agregamos un texto en el parrafo con el mensaje de error
 	       errorApellido2.innerHTML=mensajeError;
 	       return esValido;
 	    }else{
+			// Formateamos el nombre (Primera letra en mayúscula, resto en minúsculas)
+				    apellido2 = apellido2.charAt(0).toUpperCase() + apellido2.slice(1).toLowerCase();
+				    // Actualizamos el campo con el valor formateado
+				    campoApellido2.value = apellido2;
 	        campoApellido2.classList.remove('camposConError');
 	        errorApellido2.innerHTML="";
 	        esValido=true;
@@ -170,7 +184,7 @@ function validarApellido2(){
 
 
  function validarEmail(){
-    let email=campoEmail.value;
+    let email=campoEmail.value.trim();
     let patron= /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/
     let esValido=false;
     if(patron.test(email)){  //utilizamos el metodo test() para esta validacion
@@ -180,6 +194,8 @@ function validarApellido2(){
        esValido=true;
        return esValido;
       }else{
+		email=email.toLowerCase();
+		campoEmail.value=email;
        campoEmail.className="camposConError";
        mensajeError="Formato no válido";
        errorEmail.innerHTML=mensajeError;
@@ -276,6 +292,8 @@ function getEdad(dateString) {
     }
     return edad
   }
+  
+  /*
 function escribirMensaje(event) {   
    event.preventDefault();  //con esto hacemos que la ACCCION del formulario se autoejecute
    let validoUserName=validarUserName();
@@ -292,8 +310,62 @@ function escribirMensaje(event) {
 
  if(validoUserName && validoPassword && validoDni && validoNombre && validoApellido1 && validoApellido2 &&
 	   validoEmail && validoTelefono && validoEmail && validoFechaNacimiento>=16){
-   document.getElementById("formularioEditarMedico").submit();
+   document.getElementById("formularioEditarPaciente").submit();
    }
 }
 
   botonEnviar.addEventListener("click", escribirMensaje, false);    
+*/
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+      const reservarBtn = document.getElementById("enviar");
+      const confirmModal = document.getElementById("confirmModal");
+      const continuarBtn = document.getElementById("continuarReserva");
+      const cancelarBtn = document.getElementById("cancelarReserva");
+
+      let formularioActual = document.getElementById("formularioEditarPaciente");
+
+      // Mostrar el modal después de validar
+      reservarBtn.addEventListener("click", function (event) {
+          event.preventDefault(); // Prevenir el comportamiento predeterminado del botón
+
+          // Ejecutar validaciones
+          const validoUserName = validarUserName();
+          const validoPassword = validarPassword();
+          const validoDni = validarDni();
+          const validoNombre = validarNombre();
+          const validoApellido1 = validarApellido1();
+          const validoApellido2 = validarApellido2();
+          const validoEmail = validarEmail();
+          const validoTelefono = validarTelefono();
+          const validoFechaNacimiento = validarFechaNacimiento();
+
+          // Si todas las validaciones son correctas, mostrar el modal
+          if (
+              validoUserName &&
+              validoPassword &&
+              validoDni &&
+              validoNombre &&
+              validoApellido1 &&
+              validoApellido2 &&
+              validoEmail &&
+              validoTelefono &&
+              validoFechaNacimiento >= 16
+          ) {
+              confirmModal.style.display = "flex";
+          }
+      });
+
+      // Confirmar y enviar el formulario
+      continuarBtn.addEventListener("click", function () {
+          confirmModal.style.display = "none";
+          formularioActual.submit();
+      });
+
+      // Cancelar la edición y cerrar el modal
+      cancelarBtn.addEventListener("click", function () {
+          confirmModal.style.display = "none";
+      });
+  });

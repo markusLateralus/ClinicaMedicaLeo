@@ -48,6 +48,7 @@ h2{
 	text-align: center;
 	
 }
+
 /* Navigation menu styles */
 nav {
 	
@@ -122,6 +123,12 @@ button {
 button:hover {
     background-color: #005f8c; /* Darker blue on hover */
 }
+
+.expliacionPagina{
+	    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
  /* ZONA DE NOTIFICACIONES */
 .mensajes-container {
     width: 90%;
@@ -169,6 +176,69 @@ button:hover {
  /* FIN  ZONA DE NOTIFICACIONES */
 
 
+/* inicio slider*/
+.slider {
+    position: relative;
+    max-width: 70%;
+    max-height: 70%;
+    margin: 20px auto;
+    overflow: hidden;
+    border: 3px solid #339fd9;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slider {
+    position: relative;
+    overflow: hidden;
+    width: 40%;
+    height: 500px; /* Aumentado a 600px */
+    margin: 0 auto;
+    border-radius: 10px; /* Opcional para esquinas redondeadas */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para un diseño más atractivo */
+}
+
+.slide {
+    min-width: 100%;
+    height: 600px; /* Altura sincronizada con el contenedor */
+    object-fit: cover; /* Ajusta la imagen dentro del contenedor */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+
+
+button.prev, button.next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    font-size: 24px;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+button.prev {
+    left: 10px;
+}
+
+button.next {
+    right: 10px;
+}
+
+button.prev:hover, button.next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+/*fin slider*/
 /* Footer styles */
 footer {
 	background-color: #007bbf; /* Footer background */
@@ -189,7 +259,6 @@ footer {
 }
 
 .footer-left {
-	margin-left: -140px;
 	display: flex;
 	gap: 15px; /* Espacio entre enlaces o íconos */
 }
@@ -217,29 +286,6 @@ footer {
 .footer-right a:hover img {
 	filter: brightness(0.8);
 }
-
-
-
-
-
-
-/* Responsive design */
-@media screen and (max-width: 768px) {
-    nav ul {
-        display: block;
-        text-align: left;
-    }
-    
-    nav ul li {
-        display: block;
-        margin: 10px 0;
-    }
-
-    table {
-        width: 100%;
-    }
-}
-
 /* Menu styles */
 .menu {
     list-style-type: none;
@@ -300,8 +346,152 @@ footer {
     display: block;
 }
 
+
+
+
+
+/* Responsive design */
+@media (max-width: 1200px) {
+    header img {
+        width: 150px;
+    }
+
+    h1 {
+        font-size: 50px;
+    }
+
+    main {
+        max-width: 70%;
+    }
+
+    input, select, button {
+        font-size: 17px;
+        padding: 12px;
+    }
+
+    footer a {
+        font-size: 15px;
+    }
+
+    footer img {
+        width: 26px;
+        height: 26px;
+    }
+}
+
+@media (max-width: 992px) {
+    header img {
+        width: 100px;
+    }
+
+    h1 {
+        font-size: 25px;
+    }
+
+    main {
+        max-width: 80%;
+    }
+
+    input, select, button {
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    footer a {
+        font-size: 14px;
+    }
+
+    footer img {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+		.divLogo { 
+	margin-top: 10px;
+	 margin-left: 10px; 
+	 text-align: center; 
+	 }
+    header img {
+        width: 80px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    main {
+        max-width: 90%;
+        margin: 10px auto;
+        padding: 15px;
+    }
+    .form-group input, .form-group select {
+        font-size: 14px;
+    }
+    input, select, button {
+        font-size: 14px;
+    }
+
+    footer a {
+        font-size: 12px;
+    }
+
+    footer img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-left, .footer-right {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+		.divLogo { 
+	margin-top: 10px;
+	 margin-left: 10px; 
+	 text-align: center; 
+	 }
+	    header h1 {
+        font-size: 18px;
+    }
+	
+    header img {
+        width: 60px;
+    }
+
+    h1 {
+        font-size: 18px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    input, select, button {
+        font-size: 14px;
+    }
+
+    footer img {
+        width: 20px;
+        height: 20px;
+    }
+        footer a {
+        font-size: 12px;
+    }
+}
+
+
+
 /* Responsive submenu behavior */
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
     .menu li {
         display: block;
         width: 100%;
@@ -311,9 +501,6 @@ footer {
         position: static;
     }
 }
-
-
-
 
 
 

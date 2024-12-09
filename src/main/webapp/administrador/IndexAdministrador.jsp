@@ -18,18 +18,14 @@
 String tipoUsuario = (String) session.getAttribute("tipoUsuario");
 Administrador administrador = (Administrador) request.getAttribute("administrador");
 // Controlar acceso a la lista de pacientes
-if (tipoUsuario == null) {
-    // Si el usuario no está logado, redirigir al login
-    response.sendRedirect("Login.jsp");
-    return;
-}
-    // Si es Médico o Administrador, puede ver la lista
+ // Si es Médico o Administrador, puede ver la lista
 	 %>
 
 <body>
 <header>
 <div class="divLogo">
 <a href="AdministradorServlet?action=irIndexAdministrador&id=<%=administrador.getId()%>">
+
     <img src="imagenes/ClinicaLeo2.png" alt="Logo de Clínica LEO" class="logo">
     </a>
 </div>
@@ -97,8 +93,8 @@ if (tipoUsuario == null) {
 	<footer class="footer">
 		<div class="footer-container">
 			<div class="footer-left">
-				<a href="#contacto">Contacto</a> <a href="#aviso-legal">Aviso
-					Legal</a> <a href="#politicas-privacidad">Políticas de Privacidad</a>
+						<a href="AdministradorServlet?action=irAvisoLegal&id=<%=administrador.getId()%>">Aviso Legal</a>
+				 <a href="AdministradorServlet?action=irPoliticaPrivacidad&id=<%=administrador.getId()%>">Políticas de Privacidad</a>
 			</div>
 			<div class="footer-right">
 				<a href="https://www.facebook.com" target="_blank"><img

@@ -20,7 +20,7 @@ public class MedicoDAO {
         Context initContext = new InitialContext();
         Context envContext  = (Context)initContext.lookup("java:/comp/env");
         dataSource = (DataSource)envContext.lookup("jdbc/clinicaMedica");
-        System.out.println("abriendo base de datos MEDICO");
+//        System.out.println("abriendo base de datos MEDICO");
     }
     
     
@@ -88,27 +88,100 @@ public class MedicoDAO {
         return medicos;
     }
 
-    public void insertarMedico(Medico medico) throws SQLException {
-    	
-        try (Connection conn = dataSource.getConnection()) {
-            String query = "INSERT INTO medicos (username, password, dni, nombre, apellido1, apellido2, especialidad , email, telefono, fecha_nacimiento) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public int insertarMedico(Medico medico) throws SQLException {
+    	   int medicoId = -1;
+    	    Connection conn = null;
+    	    PreparedStatement stmt = null;
 
-            PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setString(1, medico.getUsername());
-            stmt.setString(2, medico.getPassword());
-            stmt.setString(3, medico.getDni());
-            stmt.setString(4, medico.getNombre());
-            stmt.setString(5, medico.getApellido1());
-            stmt.setString(6, medico.getApellido2());
-            stmt.setString(7, medico.getEspecialidad());
-            stmt.setString(8, medico.getEmail());
-            stmt.setString(9, medico.getTelefono());
-            stmt.setDate(10, new java.sql.Date(medico.getFechaNacimiento().getTime()));
-            stmt.executeUpdate();
-            System.out.println("insertado correctamente medico: " + medico.getNombre() + " " + medico.getApellido1() + " " + medico.getApellido2());
+    	    try {
+    	        conn = dataSource.getConnection();
+    	        conn.setAutoCommit(false); // Desactivamos el autocommit para manejar la transacción.
 
-        }
-    }
+    	        // Insertar el médico
+    	        String insertMedicoQuery = "INSERT INTO medicos (username, password, dni, nombre, apellido1, apellido2, especialidad, email, telefono, fecha_nacimiento) " +
+    	                                   "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    	        stmt = conn.prepareStatement(insertMedicoQuery, Statement.RETURN_GENERATED_KEYS);
+    	        stmt.setString(1, medico.getUsername());
+    	        stmt.setString(2, medico.getPassword());
+    	        stmt.setString(3, medico.getDni());
+    	        stmt.setString(4, medico.getNombre());
+    	        stmt.setString(5, medico.getApellido1());
+    	        stmt.setString(6, medico.getApellido2());
+    	        stmt.setString(7, medico.getEspecialidad());
+    	        stmt.setString(8, medico.getEmail());
+    	        stmt.setString(9, medico.getTelefono());
+    	        stmt.setDate(10, new java.sql.Date(medico.getFechaNacimiento().getTime()));
+
+    	        int rowsAffected = stmt.executeUpdate();
+    	        if (rowsAffected == 0) {
+    	            throw new SQLException("No se pudo insertar el médico.");
+    	        }
+
+    	        // Obtener el ID del médico recién insertado
+    	        try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+    	            if (generatedKeys.next()) {
+    	                medicoId = generatedKeys.getInt(1);
+    	            } else {
+    	                throw new SQLException("No se pudo obtener el ID del nuevo médico.");
+    	            }
+    	        }
+
+    	        // Insertar los horarios
+    	        String insertHorariosQuery = 
+    	            "INSERT INTO horarios (medico_id, dia, hora, estado) VALUES " +
+    	            "(?, 'Lunes', '09:00:00', 'disponible'), " +
+    	            "(?, 'Lunes', '10:00:00', 'disponible'), " +
+    	            "(?, 'Lunes', '11:00:00', 'disponible'), " +
+    	            "(?, 'Lunes', '12:00:00', 'disponible'), " +
+    	            "(?, 'Lunes', '13:00:00', 'disponible'), " +
+    	            "(?, 'Martes', '09:00:00', 'disponible'), " +
+    	            "(?, 'Martes', '10:00:00', 'disponible'), " +
+    	            "(?, 'Martes', '11:00:00', 'disponible'), " +
+    	            "(?, 'Martes', '12:00:00', 'disponible'), " +
+    	            "(?, 'Martes', '13:00:00', 'disponible'), " +
+    	            "(?, 'Miércoles', '09:00:00', 'disponible'), " +
+    	            "(?, 'Miércoles', '10:00:00', 'disponible'), " +
+    	            "(?, 'Miércoles', '11:00:00', 'disponible'), " +
+    	            "(?, 'Miércoles', '12:00:00', 'disponible'), " +
+    	            "(?, 'Miércoles', '13:00:00', 'disponible'), " +
+    	            "(?, 'Jueves', '09:00:00', 'disponible'), " +
+    	            "(?, 'Jueves', '10:00:00', 'disponible'), " +
+    	            "(?, 'Jueves', '11:00:00', 'disponible'), " +
+    	            "(?, 'Jueves', '12:00:00', 'disponible'), " +
+    	            "(?, 'Jueves', '13:00:00', 'disponible'), " +
+    	            "(?, 'Viernes', '09:00:00', 'disponible'), " +
+    	            "(?, 'Viernes', '10:00:00', 'disponible'), " +
+    	            "(?, 'Viernes', '11:00:00', 'disponible'), " +
+    	            "(?, 'Viernes', '12:00:00', 'disponible'), " +
+    	            "(?, 'Viernes', '13:00:00', 'disponible')";
+
+    	        try (PreparedStatement horariosStmt = conn.prepareStatement(insertHorariosQuery)) {
+    	            for (int i = 1; i <= 25; i++) {
+    	                horariosStmt.setInt(i, medicoId);
+    	            }
+    	            horariosStmt.executeUpdate();
+    	        }
+
+    	        conn.commit(); // Confirmamos la transacción
+    	    } catch (SQLException e) {
+    	        if (conn != null) {
+    	            try {
+						conn.rollback();
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} // Revertimos la transacción en caso de error
+    	        }
+    	        throw e;
+    	    } finally {
+    	        if (stmt != null) stmt.close();
+    	        if (conn != null) conn.close();
+    	    }
+
+    	    return medicoId; // Devolvemos el ID del médico recién creado
+    	}
+
+    
 
     public void actualizarMedico(Medico medico) throws SQLException {
 
@@ -129,7 +202,7 @@ public class MedicoDAO {
             stmt.setDate(10, new java.sql.Date(medico.getFechaNacimiento().getTime()));
             stmt.setInt(11, medico.getId());
             stmt.executeUpdate();
-            System.out.println("actualizando correctamente medico: " + medico.getNombre() + " " + medico.getApellido1() + " " + medico.getApellido2());
+//            System.out.println("actualizando correctamente medico: " + medico.getNombre() + " " + medico.getApellido1() + " " + medico.getApellido2());
 
         }
     }

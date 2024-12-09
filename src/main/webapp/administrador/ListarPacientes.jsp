@@ -79,13 +79,9 @@ if (tipoUsuario == null) {
 	<h2>Lista de Pacientes</h2>
     <table border="1">
         <tr>
-            <th>ID</th>
-            <th>Username</th>
-              <th>PASSWORD</th>
             <th>Nombre</th>
-            <th>Email</th>
-            <th>Teléfono</th>
-            <th>Fecha nacimiento</th>
+            <th>Primer Apellido</th>
+            <th>Segundo Apellido</th>
             <th>Acciones</th>
         </tr>
         <%
@@ -99,15 +95,11 @@ if (tipoUsuario == null) {
             for (Paciente paciente : pacientes) {
         %>
         <tr>
-            <td><%= paciente.getId() %></td>
-            <td><%= paciente.getUsername() %></td>
-              <td><%= paciente.getPassword() %></td>
-            <td><%= paciente.getNombre() %></td>
-            <td><%= paciente.getEmail() %></td>
-            <td><%= paciente.getTelefono() %></td>
-              <td><%= paciente.getFechaNacimiento() %></td>
+             <td><%= paciente.getNombre() %></td>
+              <td><%= paciente.getApellido1() %></td>
+            <td><%= paciente.getApellido2() %></td>
             <td>
-              <a href="AdministradorServlet?action=verPaciente&idPaciente=<%= paciente.getId()%>&idAdministrador=<%=administrador.getId()%>">VER</a>
+              <a href="AdministradorServlet?action=verPaciente&idPaciente=<%= paciente.getId()%>&idAdministrador=<%=administrador.getId()%>">Ver</a>
                 <a href="AdministradorServlet?action=irEditarPaciente&idPaciente=<%= paciente.getId() %>&idAdministrador=<%=administrador.getId()%>">Editar</a>
 				 <form action="AdministradorServlet" method="post" class="formularioReserva">
                             <input type="hidden" name="action" value="eliminarMedico">
@@ -140,8 +132,8 @@ if (tipoUsuario == null) {
 	<footer class="footer">
 		<div class="footer-container">
 			<div class="footer-left">
-				<a href="#contacto">Contacto</a> <a href="#aviso-legal">Aviso
-					Legal</a> <a href="#politicas-privacidad">Políticas de Privacidad</a>
+						<a href="AdministradorServlet?action=irAvisoLegal&id=<%=administrador.getId()%>">Aviso Legal</a>
+				 <a href="AdministradorServlet?action=irPoliticaPrivacidad&id=<%=administrador.getId()%>">Políticas de Privacidad</a>
 			</div>
 			<div class="footer-right">
 				<a href="https://www.facebook.com" target="_blank"><img
@@ -158,7 +150,7 @@ if (tipoUsuario == null) {
 
 	</footer>
 </body>
-   <script src="./administrador/EliminarPacienteA.js"></script>
+   <script src="./js/EliminarPacienteA.js"></script>
     
     
     

@@ -4,6 +4,7 @@ public class Horario {
 
 	   private int id;
 	    private int medicoId;
+	    private int pacienteId;
 	    private String dia;
 	    private String hora;
 	    private String estado;
@@ -24,6 +25,9 @@ public class Horario {
 		public void setMedicoId(int medicoId) {
 			this.medicoId = medicoId;
 		}
+		public void setPacienteId(int pacienteIdd) {
+			this.pacienteId = pacienteIdd;
+		}
 		public void setDia(String dia) {
 			this.dia = dia;
 		}
@@ -38,6 +42,9 @@ public class Horario {
 		}
 		public int getMedicoId() {
 			return medicoId;
+		}
+		public int getPacienteId() {
+			return pacienteId;
 		}
 		public String getDia() {
 			return dia;

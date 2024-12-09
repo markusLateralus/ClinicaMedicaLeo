@@ -34,7 +34,7 @@ String tipoUsuario = (String) session.getAttribute("tipoUsuario");
     <ul class="menu">
         <li><a href="ConsultarCitaServlet?action=irSolicitarCita&id=<%=paciente.getId()  %>" >Consultar especialistas</a></li>
         <!-- Submenú de Datos personales -->
-       <li><a href="RealizarReservaServlet?action=mostrarNotificaciones&idPaciente=<%=paciente.getId()  %>" >Consultar notificaciones</a></li>
+       <li><a href="RealizarReservaServlet?action=mostrarCitasPaciente&idPaciente=<%=paciente.getId()  %>" >Consultar Citas</a></li>
      
         <li>
             <a href="#">Datos Personales</a>
@@ -90,8 +90,9 @@ String tipoUsuario = (String) session.getAttribute("tipoUsuario");
 	<footer class="footer">
 		<div class="footer-container">
 			<div class="footer-left">
-				<a href="#contacto">Contacto</a> <a href="#aviso-legal">Aviso
-					Legal</a> <a href="#politicas-privacidad">Políticas de Privacidad</a>
+				<a href="PacienteServlet?action=irContacto&id=<%=paciente.getId()%>">Contacto</a>  
+			<a href="PacienteServlet?action=irAvisoLegal&id=<%=paciente.getId()%>">Aviso Legal</a>
+				 <a href="PacienteServlet?action=irPoliticaPrivacidad&id=<%=paciente.getId()%>">Políticas de Privacidad</a>
 			</div>
 			<div class="footer-right">
 				<a href="https://www.facebook.com" target="_blank"><img

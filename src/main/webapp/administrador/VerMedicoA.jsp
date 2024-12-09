@@ -34,6 +34,7 @@ Administrador administrador = (Administrador) request.getAttribute("administrado
 <a href="AdministradorServlet?action=irIndexAdministrador&id=<%=administrador.getId()%>">
     <img src="imagenes/ClinicaLeo2.png" alt="Logo de Clínica LEO" class="logo">
     </a>
+    </div>
     <div class="divH1">
         <h1>Clínica LEO</h1>
     </div>
@@ -96,7 +97,7 @@ Administrador administrador = (Administrador) request.getAttribute("administrado
      <div class="form-container">
         <form class="formularioInsertarPaciente">
             <fieldset>
-                <legend>DATOS DEL PACIENTE</legend>
+                <legend>DATOS DEL MÉDICO</legend>
                 <label for="nombre">Nombre:</label>
                 <input type="text" id="nombre" name="nombre" value="<%= medico.getNombre() %>" readonly class="readonly-field">
                 
@@ -124,18 +125,18 @@ Administrador administrador = (Administrador) request.getAttribute("administrado
            
             </fieldset>
         </form>
-    </div>
-
-    <div class="divRegresar">
-    <% if(medico==null){ %>
-        <a href="MedicoServlet?action=irIndexMedico&id=<%= medico.getId() %>">Regresar</a>
-        <%}else{%>
-        	<a id="botonRegresar" >Regresar</a>
-       <%  }%>
-                     
-    
-    
-    </div>
+</div>
+           <form  action="AdministradorServlet" method="get" >
+                    <div class="form-group">
+        <input type="hidden" name="action" value="listarMedicos">
+            </div>
+              <div class="form-group">
+         <input type="hidden" name="id"value="<%= administrador.getId() %>" />
+         </div>
+            <div class="divRegresar">
+                	<button  type="submit" id="enviar" class="divRegresar">volver</button>
+                	</div>
+                </form>
  
  </main>
  
@@ -146,8 +147,8 @@ Administrador administrador = (Administrador) request.getAttribute("administrado
 	<footer class="footer">
 		<div class="footer-container">
 			<div class="footer-left">
-				<a href="#contacto">Contacto</a> <a href="#aviso-legal">Aviso
-					Legal</a> <a href="#politicas-privacidad">Políticas de Privacidad</a>
+						<a href="AdministradorServlet?action=irAvisoLegal&id=<%=administrador.getId()%>">Aviso Legal</a>
+				 <a href="AdministradorServlet?action=irPoliticaPrivacidad&id=<%=administrador.getId()%>">Políticas de Privacidad</a>
 			</div>
 			<div class="footer-right">
 				<a href="https://www.facebook.com" target="_blank"><img
@@ -164,5 +165,5 @@ Administrador administrador = (Administrador) request.getAttribute("administrado
 
 	</footer>
 </body>
-  <script src="./administrador/Redirecciones.js"></script>
+
 </html>

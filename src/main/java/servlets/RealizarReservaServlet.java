@@ -65,9 +65,20 @@ public class RealizarReservaServlet extends HttpServlet{
     		 else if ("irMostrarNotificaciones".equals(action)) {
 //                 irMostrarNotificaciones(request, response);
              } 
-    		 else if ("mostrarNotificaciones".equals(action)) {
-                 mostrarNotificaciones(request, response);
-             }
+    		 else if ("mostrarNotificacionesPaciente".equals(action)) {
+                 mostrarNotificacionesPacientes(request, response);
+//                 mostrarCitasPacientes(request,response);
+                 
+             } else if ("mostrarNotificacionesMedico".equals(action)) {
+                 mostrarNotificacionesMedico(request, response);
+             } 
+        	 else if ("mostrarCitasPaciente".equals(action)) {
+                 mostrarCitasPacientes(request, response);
+//                 mostrarCitasPacientes(request,response);
+                 
+             } else if ("mostrarCitasMedico".equals(action)) {
+                 mostrarCitasMedico(request, response);
+             } 
     	}
     
     	
@@ -89,17 +100,25 @@ public class RealizarReservaServlet extends HttpServlet{
             String dia=request.getParameter("dia");
             String hora=request.getParameter("hora");
             // Lógica para actualizar el estado en la base de datos
+          
+            Horario horario=new Horario();
+            horario.setId(horarioId);
+            horario.setDia(dia);
+            horario.setHora(hora);
+            horario.setMedicoId(idMedico);
+            horario.setPacienteId(idPaciente);
+            horario.setEstado("ocupado");
             HorarioDAO horarioDAO=null;
-            Horario horario=null;
     		try {
     			horarioDAO = new HorarioDAO();
+    			
     		
     		} catch (Exception e) {
     			// TODO Auto-generated catch block
     			e.printStackTrace();
     		}
-            boolean exito = horarioDAO.reservarHorario(horarioId);
-
+            boolean exito = horarioDAO.reservarHorario(horario);
+            System.out.println("EXITO  " + exito);
             if (exito) {
 //            	horario=horarioDAO.getHorarioById(horarioId);
             	   Paciente paciente=null;
@@ -129,8 +148,9 @@ public class RealizarReservaServlet extends HttpServlet{
                 Notificacion notificacionPaciente = new Notificacion();
                 notificacionPaciente.setIdPaciente(idPaciente);
                 notificacionPaciente.setIdMedico(idMedico);
-                notificacionPaciente.setMensaje("Se ha realizado la reserva para el día " + dia + " a las " + hora + " con el Dr. " + medico.getNombre() + " especialista en " + medico.getEspecialidad());
-                
+                notificacionPaciente.setMensajePaciente("Se ha realizado la reserva para el día " + dia + " a las " + hora + " con el Dr. " + medico.getNombre() + " especialista en " + medico.getEspecialidad());
+                notificacionPaciente.setMensajeMedico("Se ha realizado la reserva para el día " + dia + " a las " + hora + " con el paciente " + paciente.getNombre() + " " + paciente.getApellido1());
+
                 notificacionPaciente.setEstado("activo");
                 try {
 					notificacionDAO.insertarNotificacion(notificacionPaciente);
@@ -138,32 +158,23 @@ public class RealizarReservaServlet extends HttpServlet{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-                // Mensaje para el paciente
-                Notificacion notificacionMedico = new Notificacion();
-                notificacionMedico.setIdPaciente(idPaciente);
-                notificacionMedico.setIdMedico(idMedico);
-                notificacionMedico.setMensaje("Se ha realizado la reserva para el día " + dia + " a las " + hora + " con el paciente " + paciente.getNombre() + " " + paciente.getApellido1());
                 
-                notificacionMedico.setEstado("activo");
-//                try {
-//					notificacionDAO.insertarNotificacion(notificacionMedico);
-//				} catch (SQLException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
- 
-            	
+    			
+				List<Horario> horarios=null;
+				 horarios = horarioDAO.obtenerHorariosPorPaciente(idPaciente);
+			
+	request.setAttribute("horarios", horarios);
                 
-                //////////////////////////7ultimas
-//            	response.sendRedirect("ConsultarCitaServlet?action=verHorarioDelMedico&id="+idMedico+"&idPaciente="+idPaciente);
-//             	response.sendRedirect("./paciente/IndexPaciente.jsp");
+    request.setAttribute("medico", medico);
                 request.setAttribute("paciente", paciente);
                 request.setAttribute("notificacionPaciente", notificacionPaciente);
-//             	 request.getRequestDispatcher("./paciente/IndexPaciente.jsp").forward(request, response);
-                 response.sendRedirect("RealizarReservaServlet?action=mostrarNotificaciones&idPaciente="+idPaciente);
+                request.setAttribute("horario", horario);
+              response.sendRedirect("RealizarReservaServlet?action=mostrarNotificacionesPaciente&idPaciente="+idPaciente);
+             
+
 
             } else {
-                response.sendRedirect("error.jsp");
+//                response.sendRedirect("error.jsp");
             }
         }
         
@@ -171,9 +182,9 @@ public class RealizarReservaServlet extends HttpServlet{
 
 
         
-        public void mostrarNotificaciones(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        public void mostrarNotificacionesPacientes(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
             int idPaciente = Integer.parseInt(request.getParameter("idPaciente"));
-//            int idPaciente = (int) session.getAttribute("idPaciente");
+//            int idHorario = Integer.parseInt(request.getParameter("horarioId"));
             List<Notificacion> notificaciones=null;
 			try {
 				notificaciones = notificacionDAO.obtenerNotificacionesActivasParaPacientes(idPaciente);
@@ -188,8 +199,125 @@ public class RealizarReservaServlet extends HttpServlet{
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
+						
+						List<Horario> horarios=null;
+						 horarios = horarioDAO.obtenerHorariosPorPaciente(idPaciente);
+					
+			request.setAttribute("horarios", horarios);
             request.setAttribute("notificaciones", notificaciones);
             request.setAttribute("paciente", paciente);
-            request.getRequestDispatcher("./paciente/notificacionesPaciente.jsp").forward(request, response);
+            request.getRequestDispatcher("./paciente/IndexPaciente.jsp").forward(request, response);
         }
+        
+        
+          
+        public void mostrarNotificacionesMedico(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+            int idMedico = Integer.parseInt(request.getParameter("idMedico"));
+//          int idPaciente = Integer.parseInt(request.getParameter("idPaciente"));
+//            int idPaciente = (int) session.getAttribute("idPaciente");
+            List<Notificacion> notificaciones=null;
+			notificaciones = notificacionDAO.obtenerNotificacionesActivasParaMedicos(idMedico);
+			   Medico medico=null;
+						try {
+							medico = medicoDAO.getMedicoById(idMedico);
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+						////////////MARCOS ESTAS AKI SOLUCNINAOD ESTO
+						List<Horario> horarios=null;
+						 horarios = horarioDAO.obtenerHorariosPorMedico(idMedico);
+            request.setAttribute("notificaciones", notificaciones);
+            request.setAttribute("horarios", horarios);
+            request.setAttribute("medico", medico);
+          request.getRequestDispatcher("./medico/IndexMedico.jsp").forward(request, response);
+//            response.sendRedirect("MedicoServlet?action=irIndexMedico&idMedico="+idMedico);
+
+        }
+        
+        
+        public void mostrarCitasPacientes(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+            int idPaciente = Integer.parseInt(request.getParameter("idPaciente"));
+//            int idHorario = Integer.parseInt(request.getParameter("horarioId"));
+            List<Notificacion> notificaciones=null;
+            int idMedico = 0;
+			try {
+				notificaciones = notificacionDAO.obtenerNotificacionesActivasParaPacientes(idPaciente);
+				idMedico=notificaciones.get(0).getIdMedico();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			   Paciente paciente=null;
+						try {
+							paciente = pacienteDAO.getPacienteById(idPaciente);
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					Medico medico=null;
+					
+					try {
+						medico=medicoDAO.getMedicoById(idMedico);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+						
+						
+						
+						
+						List<Horario> horarios=null;
+						 horarios = horarioDAO.obtenerHorariosPorPaciente(idPaciente);
+					
+			request.setAttribute("horarios", horarios);
+	          request.setAttribute("medico", medico);
+            request.setAttribute("paciente", paciente);
+          request.getRequestDispatcher("./paciente/CitasPaciente.jsp").forward(request, response);
+//            response.sendRedirect("RealizarReservaServlet?action=mostrarCitasPaciente&idPaciente="+idPaciente);
+
+        }   
+ 
+        public void mostrarCitasMedico(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+            int idMedico = Integer.parseInt(request.getParameter("idMedico"));
+//          int idPaciente = Integer.parseInt(request.getParameter("idPaciente"));
+//            int idPaciente = (int) session.getAttribute("idPaciente");
+            List<Notificacion> notificaciones=null;
+			notificaciones = notificacionDAO.obtenerNotificacionesActivasParaMedicos(idMedico);
+			   Medico medico=null;
+						try {
+							medico = medicoDAO.getMedicoById(idMedico);
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				int idPaciente;
+				
+				
+				Paciente paciente=null;
+				try {
+					idPaciente=notificaciones.get(0).getIdPaciente();
+					paciente=pacienteDAO.getPacienteById(idPaciente);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}catch(IndexOutOfBoundsException i) {
+					i.printStackTrace();
+				}
+						
+						
+						////////////MARCOS ESTAS AKI SOLUCNINAOD ESTO
+						List<Horario> horarios=null;
+						 horarios = horarioDAO.obtenerHorariosPorMedico(idMedico);
+            request.setAttribute("notificaciones", notificaciones);
+            request.setAttribute("horarios", horarios);
+            request.setAttribute("medico", medico);
+            request.setAttribute("paciente", paciente);
+            request.getRequestDispatcher("./medico/CitasMedico.jsp").forward(request, response);
+        }
+        
+        
+        
+        
 }

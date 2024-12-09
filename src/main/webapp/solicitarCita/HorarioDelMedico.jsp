@@ -44,7 +44,7 @@ Medico    medico = (Medico) request.getAttribute("medico");
 <nav>
     <ul class="menu">
         <li><a href="ConsultarCitaServlet?action=irSolicitarCita&id=<%=paciente.getId()  %>">Consultar especialistas</a></li>
-                       <li><a href="RealizarReservaServlet?action=mostrarNotificaciones&idPaciente=<%=paciente.getId()  %>" >Consultar notificaciones</a></li>
+                       <li><a href="RealizarReservaServlet?action=mostrarCitasPaciente&idPaciente=<%=paciente.getId()  %>" >Consultar Citas</a></li>
        
         <li>
             <a href="#">Datos Personales</a>
@@ -69,9 +69,13 @@ Medico    medico = (Medico) request.getAttribute("medico");
 String medicoId = request.getParameter("id");
 String horaDelHorario="";
 String diaDelHorario="";
+int horarioId = 0;
 
 %>
-    <h2>Horario del Médico <%=medico.getNombre() %></h2>
+ <div class="expliacionPagina">
+ <p>Desde aquí puedes reservar la cita médica</p>
+ </div>
+    <h2>Horario del D. <%=medico.getNombre() %></h2>
     <table border="1">
         <tr>
             <th>Hora</th>
@@ -91,7 +95,7 @@ String diaDelHorario="";
                 String[] dias = {"Lunes", "Martes", "Miércoles", "Jueves", "Viernes"};
                 for (String dia : dias) { 
                     boolean esDisponible = false;
-                    int horarioId = 0;
+                
   
 
                     for (Horario horario : horarios) {
@@ -147,8 +151,9 @@ String diaDelHorario="";
 	<footer class="footer">
 		<div class="footer-container">
 			<div class="footer-left">
-				<a href="#contacto">Contacto</a> <a href="#aviso-legal">Aviso
-					Legal</a> <a href="#politicas-privacidad">Políticas de Privacidad</a>
+			<a href="PacienteServlet?action=irContacto&id=<%=paciente.getId()%>">Contacto</a> 
+					<a href="PacienteServlet?action=irAvisoLegal&id=<%=paciente.getId()%>">Aviso Legal</a>
+				 <a href="PacienteServlet?action=irPoliticaPrivacidad&id=<%=paciente.getId()%>">Políticas de Privacidad</a>
 			</div>
 			<div class="footer-right">
 				<a href="https://www.facebook.com" target="_blank"><img
@@ -167,6 +172,6 @@ String diaDelHorario="";
 
 
 </body>
-   <script src="./solicitarCita/HorarioDelMedico.js"></script>
+   <script src="./js/HorarioDelMedico.js"></script>
 </html>
 

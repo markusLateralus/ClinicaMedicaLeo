@@ -30,9 +30,12 @@ public class NotificacionServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         try {
-            if ("eliminar".equals(action)) {
-                eliminarNotificacion(request, response);
-            } else {
+            if ("eliminarNotificacionPaciente".equals(action)) {
+                eliminarNotificacionPaciente(request, response);
+            } else  if ("eliminarNotificacionMedico".equals(action)) {
+                eliminarNotificacionMedico(request, response);
+            } 
+            else {
                 response.sendRedirect("indexPaciente.jsp");
             }
         } catch (SQLException e) {
@@ -40,13 +43,22 @@ public class NotificacionServlet extends HttpServlet {
         }
     }
 
-    private void eliminarNotificacion(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+    private void eliminarNotificacionPaciente(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
         int idNotificacion = Integer.parseInt(request.getParameter("id"));
         int idPaciente = Integer.parseInt(request.getParameter("idPaciente"));
-        notificacionDAO.marcarNotificacionComoInactiva(idNotificacion);
+        notificacionDAO.marcarNotificacionComoInactivaParaPaciente(idNotificacion);
 //        response.sendRedirect("PacienteServlet?action=verNotificaciones");
         request.setAttribute("idPaciente", idPaciente);
-        response.sendRedirect("RealizarReservaServlet?action=mostrarNotificaciones&idPaciente="+idPaciente);
+        response.sendRedirect("RealizarReservaServlet?action=mostrarNotificacionesPaciente&idPaciente="+idPaciente);
+
+    }
+    private void eliminarNotificacionMedico(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        int idNotificacion = Integer.parseInt(request.getParameter("id"));
+        int idMedico = Integer.parseInt(request.getParameter("idMedico"));
+        notificacionDAO.marcarNotificacionComoInactivaParaMedico(idNotificacion);
+//        response.sendRedirect("PacienteServlet?action=verNotificaciones");
+        request.setAttribute("idMedico", idMedico);
+        response.sendRedirect("RealizarReservaServlet?action=mostrarNotificacionesMedico&idMedico="+idMedico);
 
     }
 }
