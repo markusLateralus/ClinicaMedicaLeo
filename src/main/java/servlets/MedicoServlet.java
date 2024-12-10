@@ -10,6 +10,7 @@ import modelos.Administrador;
 import modelos.Horario;
 import modelos.Medico;
 import modelos.Notificacion;
+import modelos.NotificacionTest;
 
 import java.io.IOException;
 import java.sql.Date;

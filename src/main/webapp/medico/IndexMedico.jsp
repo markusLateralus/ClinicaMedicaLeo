@@ -39,7 +39,7 @@ String tipoUsuario = (String) session.getAttribute("tipoUsuario");
     <ul class="menu">
         <li><a href="MedicoServlet?action=irIndexMedico&id=<%=medico.getId()%>">Consultar horario semanal</a></li>
         <!-- Submenú de Datos personales -->
-                       <li><a href="RealizarReservaServlet?action=mostrarCitasMedico&idMedico=<%=medico.getId()  %>" >Consultar Citas</a></li>
+                       <li><a href="RealizarReservaServlet?action=mostrarCitasMedico&idMedico=<%=medico.getId()%>" >Consultar Citas</a></li>
         
         <li>
             <a href="#">Datos Personales</a>
@@ -51,8 +51,8 @@ String tipoUsuario = (String) session.getAttribute("tipoUsuario");
         <li><a href="LogoutServlet">Cerrar Sesión</a></li>
     </ul>
         <div class="divTipoUsuario">
-  	  <h4><%= medico.getNombre() %></h4>
-         <h4><%= "Tipo Usuario: " + tipoUsuario %></h4>
+  	  <h4><%=medico.getNombre()%></h4>
+         <h4><%="Tipo Usuario: " + tipoUsuario%></h4>
       </div>
 </nav>
 
@@ -63,7 +63,7 @@ String tipoUsuario = (String) session.getAttribute("tipoUsuario");
 	 <div class="expliacionPagina">
 	<p>Desde aquí puedes consultar tus notificaciones de reserva de cita</p>
 </div>
-<% 
+<%
 ArrayList<Notificacion> notificaciones= (ArrayList<Notificacion>) request.getAttribute("notificaciones");
 if (notificaciones != null && !notificaciones.isEmpty()) {
 %>

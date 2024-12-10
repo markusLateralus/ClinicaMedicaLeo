@@ -14,7 +14,7 @@
     <title>Index Paciente</title>
     <link rel="stylesheet" type="text/css" href="css/IndexPaciente.css">
 </head>
-<% 
+<%
 // Obtener la acción del parámetro
 String tipoUsuario = (String) session.getAttribute("tipoUsuario");
     Paciente paciente = (Paciente) request.getAttribute("paciente");
@@ -33,34 +33,34 @@ String tipoUsuario = (String) session.getAttribute("tipoUsuario");
 
 <nav>
     <ul class="menu">
-        <li><a href="ConsultarCitaServlet?action=irSolicitarCita&id=<%=paciente.getId()  %>" >Consultar especialistas</a></li>
+        <li><a href="ConsultarCitaServlet?action=irSolicitarCita&id=<%=paciente.getId()%>" >Consultar especialistas</a></li>
         <!-- Submenú de Datos personales -->
-       <li><a href="RealizarReservaServlet?action=mostrarCitasPaciente&idPaciente=<%=paciente.getId()  %>" >Consultar citas</a></li>
+       <li><a href="RealizarReservaServlet?action=mostrarCitasPaciente&idPaciente=<%=paciente.getId()%>" >Consultar citas</a></li>
        
         <!-- Submenú de Datos personales -->
         <li>
             <a href="#">Datos Personales</a>
             <ul class="submenu">
-                <li><a href="PacienteServlet?action=verPaciente&id=<%= paciente.getId() %>">Consultarlos</a></li>
-                <li><a href="PacienteServlet?action=irEditarPaciente&id=<%= paciente.getId() %>">Editarlos</a></li>
+                <li><a href="PacienteServlet?action=verPaciente&id=<%=paciente.getId()%>">Consultarlos</a></li>
+                <li><a href="PacienteServlet?action=irEditarPaciente&id=<%=paciente.getId()%>">Editarlos</a></li>
             </ul>
         </li>
         <li><a href="LogoutServlet">Cerrar Sesión</a></li>
     </ul>
             <div class="divTipoUsuario">
-  	  <h4><%= paciente.getNombre() %></h4>
-         <h4><%= "Tipo Usuario: " + tipoUsuario %></h4>
+  	  <h4><%=paciente.getNombre()%></h4>
+         <h4><%="Tipo Usuario: " + tipoUsuario%></h4>
       </div>
 </nav>
 <br>
 
 <main>
  <div class="expliacionPagina">
-<p>BIENVENIDO <%= paciente.getNombre() %></p>
+<p>BIENVENIDO <%=paciente.getNombre()%></p>
 
 <p>Desde aquí puedes consultar tus notificaciones de reserva de cita</p>
 </div>
-<% 
+<%
 ArrayList<Notificacion> notificaciones= (ArrayList<Notificacion>) request.getAttribute("notificaciones");
 if (notificaciones != null && !notificaciones.isEmpty()) {
 %>

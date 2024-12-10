@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 
 import modelos.Horario;
 import modelos.Medico;
-import modelos.Notificacion;
+import modelos.NotificacionTest;
 
 public class HorarioDAO {
 	
