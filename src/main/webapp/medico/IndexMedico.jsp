@@ -12,7 +12,7 @@
 <html lang="es">
 <head>
     <title>Index del medico</title>
-    <link rel="stylesheet" type="text/css" href="css/indexMedico.css">
+    <link rel="stylesheet" type="text/css" href="css/IndexMedico.css">
     <style>
     .disponible { background-color: green; color: white; font-size:20px;}
     .ocupado { background-color: red; color: white; font-size:20px;}
